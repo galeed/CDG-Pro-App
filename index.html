@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDG Pro App — AAA24 Themes</title>
+  <title>CDG Pro App — Dev Edition</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
-    /* TEMAS DE COLOR (VARIABLES CSS) */
     :root[data-theme="default"] {
       --bg-main: #000000;
       --panel-bg: #000000;
@@ -18,9 +17,9 @@
       --preview-bg: #080808;
       --dot-grid: #222222;
       --accent-invert: #000000;
+      --card-bg: #0d0d0d;
     }
 
-    /* Skin 1: Matrix Terminal */
     :root[data-theme="matrix"] {
       --bg-main: #020d04;
       --panel-bg: #020d04;
@@ -30,9 +29,9 @@
       --preview-bg: #000501;
       --dot-grid: #003b00;
       --accent-invert: #020d04;
+      --card-bg: #041a08;
     }
 
-    /* Skin 2: Light Clean */
     :root[data-theme="light"] {
       --bg-main: #f4f4f0;
       --panel-bg: #f4f4f0;
@@ -42,9 +41,9 @@
       --preview-bg: #e8e8e4;
       --dot-grid: #cccccc;
       --accent-invert: #ffffff;
+      --card-bg: #ffffff;
     }
 
-    /* Skin 3: Cyber Gamer (Neon Dark) */
     :root[data-theme="gamer"] {
       --bg-main: #0a0814;
       --panel-bg: #0a0814;
@@ -54,6 +53,7 @@
       --preview-bg: #05030a;
       --dot-grid: #2a083b;
       --accent-invert: #0a0814;
+      --card-bg: #130f24;
     }
 
     * {
@@ -74,7 +74,6 @@
       transition: background-color 0.2s ease, color 0.2s ease;
     }
 
-    /* Header Estilo AAA24 */
     header {
       padding: 1rem 1.2rem;
       border-bottom: 1px solid var(--border-color);
@@ -100,42 +99,45 @@
       flex-wrap: wrap;
     }
 
-    /* Selector de Temas */
-    .theme-select {
+    .theme-select, .dev-modal-btn {
       background: var(--bg-main);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 0.3rem 0.6rem;
+      padding: 0.35rem 0.7rem;
       font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
       outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .dev-modal-btn {
+      background: var(--text-main);
+      color: var(--accent-invert);
+    }
+
+    .dev-modal-btn:hover {
+      background: var(--bg-main);
+      color: var(--text-main);
     }
 
     .view-toggle-btn {
       background: var(--bg-main);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 0.3rem 0.8rem;
+      padding: 0.35rem 0.8rem;
       font-family: 'Space Mono', monospace;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      transition: all 0.15s ease;
     }
 
     .view-toggle-btn:hover {
       background: var(--text-main);
       color: var(--accent-invert);
-    }
-
-    .status-badge {
-      font-size: 0.7rem;
-      padding: 0.2rem 0.5rem;
-      border: 1px solid var(--border-color);
     }
 
     .app-container {
@@ -152,7 +154,6 @@
       display: flex;
       flex-direction: column;
       background-color: var(--bg-main);
-      transition: border-color 0.2s ease;
     }
 
     .panel:last-child {
@@ -224,9 +225,7 @@
       width: 100%;
       height: 36px;
       cursor: pointer;
-      border-radius: 0;
     }
-
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch { border: none; }
 
@@ -300,12 +299,6 @@
       font-weight: bold;
       text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .demo-btn:hover {
-      background-color: var(--bg-main);
-      color: var(--text-main);
     }
 
     .code-wrapper {
@@ -346,13 +339,100 @@
       font-weight: bold;
       text-transform: uppercase;
       cursor: pointer;
-      border-radius: 0;
-      transition: all 0.15s ease;
     }
 
-    .copy-btn:hover {
+    /* MODAL DE DESARROLLO (12 GUIDES) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-container {
       background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      width: 100%;
+      max-width: 900px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1.2rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
       color: var(--text-main);
+      padding: 0.3rem 0.6rem;
+      font-family: 'Space Mono', monospace;
+      cursor: pointer;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .guide-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .guide-card:hover {
+      transform: translateY(-2px);
+      background: var(--text-main);
+      color: var(--accent-invert);
+    }
+
+    .guide-card:hover .guide-desc {
+      color: var(--accent-invert);
+    }
+
+    .guide-icon {
+      font-size: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .guide-title {
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .guide-desc {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: none;
+      line-height: 1.3;
     }
 
     @media (max-width: 1024px) {
@@ -360,12 +440,8 @@
       .app-container {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
-        overflow: visible;
       }
-      .panel {
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-      }
+      .panel { border-right: none; border-bottom: 1px solid var(--border-color); }
       .code-wrapper { height: 250px; }
     }
   </style>
@@ -382,11 +458,14 @@
         <option value="gamer">SKIN: CYBER GAMER 🟣</option>
       </select>
 
-      <button id="viewToggle" class="view-toggle-btn" onclick="toggleViewport()">
+      <button class="view-toggle-btn" onclick="toggleViewport()">
         <span id="viewEmoji">💻</span>
-        <span id="viewText">DESKTOP VIEW</span>
+        <span id="viewText">DESKTOP</span>
       </button>
-      <span class="status-badge">v2.2 THEMES</span>
+
+      <button class="dev-modal-btn" onclick="toggleDevModal(true)">
+        DEVELOPMENT [12 GUIDES]
+      </button>
     </div>
   </header>
 
@@ -395,90 +474,107 @@
       <div class="panel-title">[01] SELECCIÓN DE MÓDULO</div>
       
       <select id="toolSelector" class="tool-select" onchange="switchTool(this.value)">
-        <option value="tokens">01. DESIGN TOKENS</option>
-        <option value="shadow">02. BOX SHADOW</option>
-        <option value="glass">03. GLASSMORPHISM</option>
-        <option value="gradient">04. GRADIENT</option>
-        <option value="border">05. BORDER</option>
-        <option value="textShadow">06. TEXT SHADOW</option>
-        <option value="transform">07. TRANSFORM</option>
-        <option value="filter">08. FILTERS</option>
-        <option value="clipPath">09. CLIP PATH</option>
-        <option value="grid">10. GRID LAYOUT</option>
-        <option value="flex">11. FLEXBOX</option>
-        <option value="aspect">12. ASPECT RATIO</option>
-        <option value="scroll">13. SCROLLBAR</option>
-        <option value="cursor">14. CURSOR</option>
-        <option value="converter">15. PX TO REM</option>
+        <optgroup label="CSS STYLING & TOKENS">
+          <option value="tokens">01. DESIGN TOKENS</option>
+          <option value="shadow">02. BOX SHADOW</option>
+          <option value="glass">03. GLASSMORPHISM</option>
+          <option value="gradient">04. GRADIENT</option>
+          <option value="border">05. BORDER</option>
+          <option value="textShadow">06. TEXT SHADOW</option>
+          <option value="transform">07. TRANSFORM</option>
+          <option value="filter">08. FILTERS</option>
+          <option value="clipPath">09. CLIP PATH</option>
+          <option value="grid">10. GRID LAYOUT</option>
+          <option value="flex">11. FLEXBOX</option>
+          <option value="aspect">12. ASPECT RATIO</option>
+          <option value="scroll">13. SCROLLBAR</option>
+          <option value="cursor">14. CURSOR</option>
+          <option value="converter">15. PX TO REM</option>
+        </optgroup>
+
+        <optgroup label="DEVELOPMENT & AI MODES">
+          <option value="fable">16. FABLE 5 WEB DESIGN</option>
+          <option value="launch">17. LAUNCH WEBSITE AI</option>
+          <option value="context">18. CONTEXT ENGINEERING</option>
+          <option value="openclaw">19. OPENCLAW SECURITY</option>
+          <option value="shortcuts">20. VS CODE & CURSOR SHORTCUTS</option>
+          <option value="git">21. GIT COMMANDS</option>
+          <option value="webperf">22. WEB PERFORMANCE</option>
+          <option value="claudeskill">23. CLAUDE SKILLS</option>
+          <option value="cursorrules">24. CURSOR RULES (.MDC)</option>
+          <option value="copilot">25. COPILOT INSTRUCTIONS</option>
+          <option value="gemini">26. GEMINI GEMS & SKILLS</option>
+          <option value="windsurf">27. WINDSURF RULES</option>
+        </optgroup>
       </select>
 
       <div id="controls-tokens" class="module-controls active">
         <div class="control-group">
-          <label for="tokColor">COLOR ACCENTO</label>
+          <label>COLOR ACCENTO</label>
           <input type="color" id="tokColor" value="#ffffff">
         </div>
         <div class="control-group">
-          <label for="tokBg">FONDO SUPERFICIE</label>
+          <label>FONDO SUPERFICIE</label>
           <input type="color" id="tokBg" value="#000000">
         </div>
         <div class="control-group">
-          <label for="tokRadius">BORDER RADIUS <span id="valTokRadius">0px</span></label>
+          <label>BORDER RADIUS <span id="valTokRadius">0px</span></label>
           <input type="range" id="tokRadius" min="0" max="30" value="0">
         </div>
       </div>
 
       <div id="controls-shadow" class="module-controls">
         <div class="control-group">
-          <label for="shdX">OFFSET X <span id="valShdX">0px</span></label>
+          <label>OFFSET X <span id="valShdX">0px</span></label>
           <input type="range" id="shdX" min="-50" max="50" value="0">
         </div>
         <div class="control-group">
-          <label for="shdY">OFFSET Y <span id="valShdY">10px</span></label>
+          <label>OFFSET Y <span id="valShdY">10px</span></label>
           <input type="range" id="shdY" min="-50" max="50" value="10">
         </div>
         <div class="control-group">
-          <label for="shdBlur">BLUR RADIUS <span id="valShdBlur">15px</span></label>
+          <label>BLUR RADIUS <span id="valShdBlur">15px</span></label>
           <input type="range" id="shdBlur" min="0" max="100" value="15">
         </div>
         <div class="control-group">
-          <label for="shdColor">COLOR SOMBRA</label>
+          <label>COLOR SOMBRA</label>
           <input type="color" id="shdColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-glass" class="module-controls">
         <div class="control-group">
-          <label for="glsBlur">BACKDROP BLUR <span id="valGlsBlur">10px</span></label>
+          <label>BACKDROP BLUR <span id="valGlsBlur">10px</span></label>
           <input type="range" id="glsBlur" min="0" max="30" value="10">
         </div>
         <div class="control-group">
-          <label for="glsOpacity">OPACIDAD <span id="valGlsOp">0.2</span></label>
+          <label>OPACIDAD <span id="valGlsOp">0.2</span></label>
           <input type="range" id="glsOpacity" min="0" max="1" step="0.05" value="0.2">
         </div>
       </div>
 
       <div id="controls-gradient" class="module-controls">
         <div class="control-group">
-          <label for="grdColor1">COLOR 1</label>
+          <label>COLOR 1</label>
           <input type="color" id="grdColor1" value="#ffffff">
         </div>
         <div class="control-group">
-          <label for="grdColor2">COLOR 2</label>
+          <label>COLOR 2</label>
           <input type="color" id="grdColor2" value="#333333">
         </div>
         <div class="control-group">
-          <label for="grdAngle">ÁNGULO <span id="valGrdAngle">90deg</span></label>
+          <label>ÁNGULO <span id="valGrdAngle">90deg</span></label>
           <input type="range" id="grdAngle" min="0" max="360" value="90">
         </div>
       </div>
 
       <div id="controls-border" class="module-controls">
         <div class="control-group">
-          <label for="brdWidth">GROSOR BORDE <span id="valBrdWidth">1px</span></label>
+          <label>GROSOR BORDE <span id="valBrdWidth">1px</span></label>
           <input type="range" id="brdWidth" min="1" max="10" value="1">
         </div>
         <div class="control-group">
-          <label for="brdStyle">ESTILO</label>
+          <label>ESTILO</label>
           <select id="brdStyle">
             <option value="solid">SOLID</option>
             <option value="dashed">DASHED</option>
@@ -486,59 +582,59 @@
           </select>
         </div>
         <div class="control-group">
-          <label for="brdColor">COLOR BORDE</label>
+          <label>COLOR BORDE</label>
           <input type="color" id="brdColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-textShadow" class="module-controls">
         <div class="control-group">
-          <label for="txtShdX">OFFSET X <span id="valTxtX">2px</span></label>
+          <label>OFFSET X <span id="valTxtX">2px</span></label>
           <input type="range" id="txtShdX" min="-20" max="20" value="2">
         </div>
         <div class="control-group">
-          <label for="txtShdY">OFFSET Y <span id="valTxtY">2px</span></label>
+          <label>OFFSET Y <span id="valTxtY">2px</span></label>
           <input type="range" id="txtShdY" min="-20" max="20" value="2">
         </div>
         <div class="control-group">
-          <label for="txtShdBlur">BLUR <span id="valTxtBlur">4px</span></label>
+          <label>BLUR <span id="valTxtBlur">4px</span></label>
           <input type="range" id="txtShdBlur" min="0" max="20" value="4">
         </div>
         <div class="control-group">
-          <label for="txtShdColor">COLOR TEXTO</label>
+          <label>COLOR TEXTO</label>
           <input type="color" id="txtShdColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-transform" class="module-controls">
         <div class="control-group">
-          <label for="trfRotate">ROTACIÓN <span id="valTrfRot">0deg</span></label>
+          <label>ROTACIÓN <span id="valTrfRot">0deg</span></label>
           <input type="range" id="trfRotate" min="-180" max="180" value="0">
         </div>
         <div class="control-group">
-          <label for="trfScale">ESCALA <span id="valTrfScl">1</span></label>
+          <label>ESCALA <span id="valTrfScl">1</span></label>
           <input type="range" id="trfScale" min="0.5" max="1.5" step="0.05" value="1">
         </div>
       </div>
 
       <div id="controls-filter" class="module-controls">
         <div class="control-group">
-          <label for="fltBlur">BLUR <span id="valFltBlur">0px</span></label>
+          <label>BLUR <span id="valFltBlur">0px</span></label>
           <input type="range" id="fltBlur" min="0" max="10" value="0">
         </div>
         <div class="control-group">
-          <label for="fltBright">BRILLO <span id="valFltBrt">100%</span></label>
+          <label>BRILLO <span id="valFltBrt">100%</span></label>
           <input type="range" id="fltBright" min="0" max="200" value="100">
         </div>
         <div class="control-group">
-          <label for="fltContrast">CONTRASTE <span id="valFltCnt">100%</span></label>
+          <label>CONTRASTE <span id="valFltCnt">100%</span></label>
           <input type="range" id="fltContrast" min="0" max="200" value="100">
         </div>
       </div>
 
       <div id="controls-clipPath" class="module-controls">
         <div class="control-group">
-          <label for="clipShape">FORMA DE RECORTE</label>
+          <label>FORMA DE RECORTE</label>
           <select id="clipShape">
             <option value="none">NINGUNO</option>
             <option value="polygon(50% 0%, 0% 100%, 100% 100%)">TRIÁNGULO</option>
@@ -549,18 +645,18 @@
 
       <div id="controls-grid" class="module-controls">
         <div class="control-group">
-          <label for="grdCols">COLUMNAS <span id="valGrdCols">2</span></label>
+          <label>COLUMNAS <span id="valGrdCols">2</span></label>
           <input type="range" id="grdCols" min="1" max="4" value="2">
         </div>
         <div class="control-group">
-          <label for="grdGap">GAP <span id="valGrdGap">10px</span></label>
+          <label>GAP <span id="valGrdGap">10px</span></label>
           <input type="range" id="grdGap" min="0" max="30" value="10">
         </div>
       </div>
 
       <div id="controls-flex" class="module-controls">
         <div class="control-group">
-          <label for="flxJustify">JUSTIFY CONTENT</label>
+          <label>JUSTIFY CONTENT</label>
           <select id="flxJustify">
             <option value="center">CENTER</option>
             <option value="flex-start">FLEX START</option>
@@ -569,7 +665,7 @@
           </select>
         </div>
         <div class="control-group">
-          <label for="flxAlign">ALIGN ITEMS</label>
+          <label>ALIGN ITEMS</label>
           <select id="flxAlign">
             <option value="center">CENTER</option>
             <option value="flex-start">FLEX START</option>
@@ -580,7 +676,7 @@
 
       <div id="controls-aspect" class="module-controls">
         <div class="control-group">
-          <label for="aspRatio">RELACIÓN DE ASPECTO</label>
+          <label>RELACIÓN DE ASPECTO</label>
           <select id="aspRatio">
             <option value="1 / 1">1 / 1 (CUADRADO)</option>
             <option value="16 / 9">16 / 9 (CINEMA)</option>
@@ -591,18 +687,18 @@
 
       <div id="controls-scroll" class="module-controls">
         <div class="control-group">
-          <label for="sclWidth">ANCHO SCROLLBAR <span id="valSclW">8px</span></label>
+          <label>ANCHO SCROLLBAR <span id="valSclW">8px</span></label>
           <input type="range" id="sclWidth" min="4" max="16" value="8">
         </div>
         <div class="control-group">
-          <label for="sclColor">COLOR SCROLLBAR</label>
+          <label>COLOR SCROLLBAR</label>
           <input type="color" id="sclColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-cursor" class="module-controls">
         <div class="control-group">
-          <label for="curType">TIPO DE CURSOR</label>
+          <label>TIPO DE CURSOR</label>
           <select id="curType">
             <option value="pointer">POINTER</option>
             <option value="crosshair">CROSSHAIR</option>
@@ -614,12 +710,24 @@
 
       <div id="controls-converter" class="module-controls">
         <div class="control-group">
-          <label for="basePx">TAMAÑO BASE (PX)</label>
+          <label>TAMAÑO BASE (PX)</label>
           <input type="number" id="basePx" value="16">
         </div>
         <div class="control-group">
-          <label for="inputPx">VALOR EN PÍXELES (PX)</label>
+          <label>VALOR EN PÍXELES (PX)</label>
           <input type="number" id="inputPx" value="24">
+        </div>
+      </div>
+
+      <div id="controls-dev-generic" class="module-controls">
+        <div class="control-group">
+          <label>TARGET FRAMEWORK / AI ENGINE</label>
+          <select id="devTarget" onchange="render()">
+            <option value="cursor">CURSOR IDE</option>
+            <option value="claude">CLAUDE 3.7 / SONNET</option>
+            <option value="gemini">GEMINI 2.0 FLASH</option>
+            <option value="copilot">GITHUB COPILOT</option>
+          </select>
         </div>
       </div>
     </section>
@@ -638,11 +746,10 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <span class="panel-title" style="margin:0;">[02] EXPORT CODE</span>
         <select id="exportFormat" style="width: 130px; padding: 0.3rem;" onchange="render()">
-          <option value="css">CSS VARS</option>
-          <option value="scss">SCSS</option>
+          <option value="css">CSS / CONFIG</option>
           <option value="json">JSON</option>
+          <option value="md">MARKDOWN</option>
           <option value="ts">TYPESCRIPT</option>
-          <option value="tailwind">TAILWIND</option>
         </select>
       </div>
 
@@ -653,10 +760,80 @@
     </section>
   </div>
 
+  <div class="modal-overlay" id="devModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <span style="font-weight: bold; font-size: 0.9rem;">DEVELOPMENT — 12 GUIDES</span>
+        <button class="modal-close-btn" onclick="toggleDevModal(false)">[X] CLOSE</button>
+      </div>
+      <div class="modal-grid">
+        <div class="guide-card" onclick="selectGuide('fable')">
+          <div class="guide-icon">✨</div>
+          <div class="guide-title">Fable 5 Web Design</div>
+          <div class="guide-desc">One-shot expert-level websites with AI: design-brief framework, technique breakdowns, and art direction.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('launch')">
+          <div class="guide-icon">🚀</div>
+          <div class="guide-title">Launch a Website with AI</div>
+          <div class="guide-desc">Beginner walkthrough for building a static site with Claude or Cursor and auto-deploying from GitHub to Netlify.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('context')">
+          <div class="guide-icon">⚙️</div>
+          <div class="guide-title">Context Engineering</div>
+          <div class="guide-desc">Configure AGENTS.md, CLAUDE.md, Cursor rules, Copilot instructions, and more in one unified strategy.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('openclaw')">
+          <div class="guide-icon">🛡️</div>
+          <div class="guide-title">OpenClaw Security Guide</div>
+          <div class="guide-desc">Secure configuration for OpenClaw, Moltbot, and Clawdbot AI agents.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('shortcuts')">
+          <div class="guide-icon">⌨️</div>
+          <div class="guide-title">VS Code & Cursor Shortcuts</div>
+          <div class="guide-desc">Complete keyboard shortcuts for VS Code and Cursor IDE with AI commands.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('git')">
+          <div class="guide-icon">🌿</div>
+          <div class="guide-title">Git Commands</div>
+          <div class="guide-desc">Essential Git commands for branching, committing, merging, and more.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('webperf')">
+          <div class="guide-icon">⚡</div>
+          <div class="guide-title">Web Performance</div>
+          <div class="guide-desc">Master Core Web Vitals, loading strategies, and optimization techniques.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('claudeskill')">
+          <div class="guide-icon">🧩</div>
+          <div class="guide-title">Claude Skills</div>
+          <div class="guide-desc">Create and configure SKILL.md files for AI agents in Cursor IDE.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('cursorrules')">
+          <div class="guide-icon">📄</div>
+          <div class="guide-title">Cursor Rules</div>
+          <div class="guide-desc">Configure AI rules with .mdc files in the modern .cursor/rules/ system.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('copilot')">
+          <div class="guide-icon">💬</div>
+          <div class="guide-title">Copilot Instructions</div>
+          <div class="guide-desc">Repository-wide and path-specific custom instructions for GitHub Copilot.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('gemini')">
+          <div class="guide-icon">💎</div>
+          <div class="guide-title">Gemini Gems & Skills</div>
+          <div class="guide-desc">Create custom AI experts and configure GEMINI.md agent instructions.</div>
+        </div>
+        <div class="guide-card" onclick="selectGuide('windsurf')">
+          <div class="guide-icon">💨</div>
+          <div class="guide-title">Windsurf Rules</div>
+          <div class="guide-desc">Global and workspace rules for Cascade AI in Windsurf IDE.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-scss.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
 
   <script>
     let currentTool = 'tokens';
@@ -664,8 +841,9 @@
 
     const demoCard = document.getElementById('demoCard');
     const demoTitle = document.getElementById('demoTitle');
+    const demoText = document.getElementById('demoText');
     const codeBlock = document.getElementById('codeBlock');
-    const exportFormatSelect = document.getElementById('exportFormat');
+    const toolSelector = document.getElementById('toolSelector');
 
     function changeTheme(themeName) {
       document.documentElement.setAttribute('data-theme', themeName);
@@ -673,24 +851,34 @@
 
     function toggleViewport() {
       isMobileView = !isMobileView;
-      const emojiEl = document.getElementById('viewEmoji');
-      const textEl = document.getElementById('viewText');
+      document.getElementById('viewEmoji').textContent = isMobileView ? '📱' : '💻';
+      document.getElementById('viewText').textContent = isMobileView ? 'MOBILE' : 'DESKTOP';
+      demoCard.classList.toggle('mobile-viewport', isMobileView);
+    }
 
-      if (isMobileView) {
-        emojiEl.textContent = '📱';
-        textEl.textContent = 'MOBILE VIEW';
-        demoCard.classList.add('mobile-viewport');
-      } else {
-        emojiEl.textContent = '💻';
-        textEl.textContent = 'DESKTOP VIEW';
-        demoCard.classList.remove('mobile-viewport');
-      }
+    function toggleDevModal(show) {
+      document.getElementById('devModal').classList.toggle('active', show);
+    }
+
+    function selectGuide(guideKey) {
+      toggleDevModal(false);
+      toolSelector.value = guideKey;
+      switchTool(guideKey);
     }
 
     function switchTool(toolName) {
       currentTool = toolName;
       document.querySelectorAll('.module-controls').forEach(ctl => ctl.classList.remove('active'));
-      document.getElementById(`controls-${toolName}`).classList.add('active');
+
+      const isDevTool = ['fable','launch','context','openclaw','shortcuts','git','webperf','claudeskill','cursorrules','copilot','gemini','windsurf'].includes(toolName);
+
+      if (isDevTool) {
+        document.getElementById('controls-dev-generic').classList.add('active');
+      } else {
+        const ctrlEl = document.getElementById(`controls-${toolName}`);
+        if (ctrlEl) ctrlEl.classList.add('active');
+      }
+
       render();
     }
 
@@ -703,10 +891,88 @@
     function render() {
       resetDemoStyles();
       let generatedCode = '';
-      let codeLanguage = 'css';
-      const format = exportFormatSelect.value;
+      const format = document.getElementById('exportFormat').value;
 
-      if (currentTool === 'tokens') {
+      // Renderizadores para Desarrollo (12 Guides)
+      const devGuidesData = {
+        fable: {
+          title: "FABLE 5 DESIGN",
+          desc: "One-shot expert-level website framework",
+          code: `# Fable 5 Web Design Brief\n- Aesthetic: Brutalist Monochrome\n- Typography: Space Mono\n- Framework: HTML + Single File App`
+        },
+        launch: {
+          title: "LAUNCH AI SITE",
+          desc: "Auto-deploying GitHub to Netlify",
+          code: `# Deploy Pipeline\n1. git init && git add .\n2. gh repo create site --public\n3. netlify deploy --prod`
+        },
+        context: {
+          title: "CONTEXT ENG.",
+          desc: "Unified AGENTS.md & CLAUDE.md config",
+          code: `# AGENTS.md System Prompt\nRole: Senior Frontend Engineer\nConstraints: Pure CSS, Zero Dependencies, High Performance.`
+        },
+        openclaw: {
+          title: "OPENCLAW SEC",
+          desc: "Security rules for Clawdbot AI agents",
+          code: `{\n  "securityLevel": "strict",\n  "allowExecution": false,\n  "sandbox": true\n}`
+        },
+        shortcuts: {
+          title: "VS / CURSOR KEYS",
+          desc: "Essential AI shortcuts",
+          code: `// Keybindings\nCMD + K: Inline Edit\nCMD + L: Chat Panel\nCMD + I: Composer Agent`
+        },
+        git: {
+          title: "GIT COMMANDS",
+          desc: "Branching & Workflow",
+          code: `git checkout -b feature/new-ui\ngit commit -m "feat: add responsive layout"\ngit push origin feature/new-ui`
+        },
+        webperf: {
+          title: "WEB PERF VITALS",
+          desc: "Core Web Vitals Optimization",
+          code: `/* Optimization Header */\nlink: rel="preload" href="font.woff2" as="font";\nloading: lazy;`
+        },
+        claudeskill: {
+          title: "CLAUDE SKILLS",
+          desc: "SKILL.md definition file",
+          code: `---
+name: CSS Generator
+description: Auto-generates CSS variables
+---
+# Skill execution rules`
+        },
+        cursorrules: {
+          title: "CURSOR RULES",
+          desc: ".cursor/rules/.mdc configuration",
+          code: `---
+description: Code Style
+globs: *.css, *.js
+---
+Always use Space Mono font and dark themes.`
+        },
+        copilot: {
+          title: "COPILOT RULES",
+          desc: "Custom repository instructions",
+          code: `// .github/copilot-instructions.md\nEnforce semantic HTML5 and vanilla JavaScript.`
+        },
+        gemini: {
+          title: "GEMINI GEMS",
+          desc: "GEMINI.md Agent Blueprint",
+          code: `# GEMINI.MD\nSystem: Assist in Single-File Web App creation with AAA24 aesthetic.`
+        },
+        windsurf: {
+          title: "WINDSURF RULES",
+          desc: "Cascade AI Workspace Rules",
+          code: `# Cascade Rules\nprioritize_speed: true\ncode_formatting: minimal`
+        }
+      };
+
+      if (devGuidesData[currentTool]) {
+        const guide = devGuidesData[currentTool];
+        demoTitle.textContent = guide.title;
+        demoText.textContent = guide.desc;
+        generatedCode = guide.code;
+      } 
+      // Renderizadores de CSS Tokens y Herramientas
+      else if (currentTool === 'tokens') {
         const color = document.getElementById('tokColor').value;
         const bg = document.getElementById('tokBg').value;
         const radius = document.getElementById('tokRadius').value;
@@ -714,16 +980,12 @@
 
         demoCard.style.backgroundColor = bg;
         demoCard.style.borderColor = color;
-        demoCard.style.borderWidth = '1px';
-        demoCard.style.borderStyle = 'solid';
         demoCard.style.borderRadius = `${radius}px`;
 
-        if (format === 'css') generatedCode = `:root {\n  --primary-color: ${color};\n  --bg-surface: ${bg};\n  --border-radius: ${radius}px;\n}`;
-        else if (format === 'scss') generatedCode = `$primary-color: ${color};\n$bg-surface: ${bg};\n$border-radius: ${radius}px;`;
-        else if (format === 'json') generatedCode = JSON.stringify({ color: { primary: { value: color } }, radius: { value: `${radius}px` } }, null, 2);
-        else if (format === 'ts') generatedCode = `export const tokens = { primaryColor: "${color}", bgSurface: "${bg}", borderRadius: "${radius}px" } as const;`;
-        else if (format === 'tailwind') generatedCode = `@theme {\n  --color-primary: ${color};\n  --color-surface: ${bg};\n  --radius-default: ${radius}px;\n}`;
+        demoTitle.textContent = "TOKENS PREVIEW";
+        demoText.textContent = "DESIGN SYSTEM VARS";
 
+        generatedCode = `:root {\n  --primary-color: ${color};\n  --bg-surface: ${bg};\n  --border-radius: ${radius}px;\n}`;
       } else if (currentTool === 'shadow') {
         const x = document.getElementById('shdX').value;
         const y = document.getElementById('shdY').value;
@@ -735,145 +997,17 @@
 
         const shadowVal = `${x}px ${y}px ${blur}px ${color}`;
         demoCard.style.boxShadow = shadowVal;
+        demoTitle.textContent = "BOX SHADOW";
 
-        if (format === 'css') generatedCode = `.box-shadow {\n  box-shadow: ${shadowVal};\n}`;
-        else if (format === 'scss') generatedCode = `$shadow: ${shadowVal};\n.box-shadow {\n  box-shadow: $shadow;\n}`;
-        else if (format === 'json') generatedCode = JSON.stringify({ shadow: { value: shadowVal } }, null, 2);
-        else if (format === 'ts') generatedCode = `export const shadows = { main: "${shadowVal}" } as const;`;
-        else if (format === 'tailwind') generatedCode = `@theme {\n  --shadow-main: ${shadowVal};\n}`;
-
-      } else if (currentTool === 'glass') {
-        const blur = document.getElementById('glsBlur').value;
-        const op = document.getElementById('glsOpacity').value;
-        document.getElementById('valGlsBlur').innerText = `${blur}px`;
-        document.getElementById('valGlsOp').innerText = op;
-
-        demoCard.style.background = `rgba(255, 255, 255, ${op})`;
-        demoCard.style.backdropFilter = `blur(${blur}px)`;
-        demoCard.style.border = `1px solid rgba(255, 255, 255, 0.2)`;
-
-        generatedCode = `.glassmorphism {\n  background: rgba(255, 255, 255, ${op});\n  backdrop-filter: blur(${blur}px);\n  border: 1px solid rgba(255, 255, 255, 0.2);\n}`;
-
-      } else if (currentTool === 'gradient') {
-        const c1 = document.getElementById('grdColor1').value;
-        const c2 = document.getElementById('grdColor2').value;
-        const angle = document.getElementById('grdAngle').value;
-        document.getElementById('valGrdAngle').innerText = `${angle}deg`;
-
-        const gradVal = `linear-gradient(${angle}deg, ${c1}, ${c2})`;
-        demoCard.style.background = gradVal;
-
-        generatedCode = `.gradient-bg {\n  background: ${gradVal};\n}`;
-
-      } else if (currentTool === 'border') {
-        const w = document.getElementById('brdWidth').value;
-        const s = document.getElementById('brdStyle').value;
-        const c = document.getElementById('brdColor').value;
-        document.getElementById('valBrdWidth').innerText = `${w}px`;
-
-        demoCard.style.border = `${w}px ${s} ${c}`;
-
-        generatedCode = `.custom-border {\n  border: ${w}px ${s} ${c};\n}`;
-
-      } else if (currentTool === 'textShadow') {
-        const x = document.getElementById('txtShdX').value;
-        const y = document.getElementById('txtShdY').value;
-        const blur = document.getElementById('txtShdBlur').value;
-        const color = document.getElementById('txtShdColor').value;
-        document.getElementById('valTxtX').innerText = `${x}px`;
-        document.getElementById('valTxtY').innerText = `${y}px`;
-        document.getElementById('valTxtBlur').innerText = `${blur}px`;
-
-        const txtShdVal = `${x}px ${y}px ${blur}px ${color}`;
-        demoTitle.style.textShadow = txtShdVal;
-
-        generatedCode = `.text-shadow {\n  text-shadow: ${txtShdVal};\n}`;
-
-      } else if (currentTool === 'transform') {
-        const rot = document.getElementById('trfRotate').value;
-        const scl = document.getElementById('trfScale').value;
-        document.getElementById('valTrfRot').innerText = `${rot}deg`;
-        document.getElementById('valTrfScl').innerText = scl;
-
-        const trfVal = `rotate(${rot}deg) scale(${scl})`;
-        demoCard.style.transform = trfVal;
-
-        generatedCode = `.transform {\n  transform: ${trfVal};\n}`;
-
-      } else if (currentTool === 'filter') {
-        const blur = document.getElementById('fltBlur').value;
-        const bright = document.getElementById('fltBright').value;
-        const contrast = document.getElementById('fltContrast').value;
-        document.getElementById('valFltBlur').innerText = `${blur}px`;
-        document.getElementById('valFltBrt').innerText = `${bright}%`;
-        document.getElementById('valFltCnt').innerText = `${contrast}%`;
-
-        const fltVal = `blur(${blur}px) brightness(${bright}%) contrast(${contrast}%)`;
-        demoCard.style.filter = fltVal;
-
-        generatedCode = `.custom-filter {\n  filter: ${fltVal};\n}`;
-
-      } else if (currentTool === 'clipPath') {
-        const shape = document.getElementById('clipShape').value;
-        demoCard.style.clipPath = shape !== 'none' ? shape : 'none';
-
-        generatedCode = `.clipped {\n  clip-path: ${shape};\n}`;
-
-      } else if (currentTool === 'grid') {
-        const cols = document.getElementById('grdCols').value;
-        const gap = document.getElementById('grdGap').value;
-        document.getElementById('valGrdCols').innerText = cols;
-        document.getElementById('valGrdGap').innerText = `${gap}px`;
-
-        demoCard.style.display = 'grid';
-        demoCard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-        demoCard.style.gap = `${gap}px`;
-
-        generatedCode = `.grid-container {\n  display: grid;\n  grid-template-columns: repeat(${cols}, 1fr);\n  gap: ${gap}px;\n}`;
-
-      } else if (currentTool === 'flex') {
-        const j = document.getElementById('flxJustify').value;
-        const a = document.getElementById('flxAlign').value;
-
-        demoCard.style.display = 'flex';
-        demoCard.style.justifyContent = j;
-        demoCard.style.alignItems = a;
-
-        generatedCode = `.flex-container {\n  display: flex;\n  justify-content: ${j};\n  align-items: ${a};\n}`;
-
-      } else if (currentTool === 'aspect') {
-        const ratio = document.getElementById('aspRatio').value;
-        demoCard.style.aspectRatio = ratio;
-
-        generatedCode = `.aspect-box {\n  aspect-ratio: ${ratio};\n}`;
-
-      } else if (currentTool === 'scroll') {
-        const w = document.getElementById('sclWidth').value;
-        const c = document.getElementById('sclColor').value;
-        document.getElementById('valSclW').innerText = `${w}px`;
-
-        generatedCode = `/* SCROLLBAR */\n::-webkit-scrollbar {\n  width: ${w}px;\n}\n::-webkit-scrollbar-thumb {\n  background: ${c};\n}`;
-
-      } else if (currentTool === 'cursor') {
-        const type = document.getElementById('curType').value;
-        demoCard.style.cursor = type;
-
-        generatedCode = `.custom-cursor {\n  cursor: ${type};\n}`;
-
-      } else if (currentTool === 'converter') {
-        const basePx = parseFloat(document.getElementById('basePx').value) || 16;
-        const inputPx = parseFloat(document.getElementById('inputPx').value) || 0;
-        const remVal = (inputPx / basePx).toFixed(4).replace(/\.?0+$/, '');
-
-        generatedCode = `/* BASE: ${basePx}px */\n.element {\n  font-size: ${remVal}rem; /* ${inputPx}px */\n}`;
+        generatedCode = `.box-shadow {\n  box-shadow: ${shadowVal};\n}`;
+      } else {
+        demoTitle.textContent = currentTool.toUpperCase();
+        demoText.textContent = "CUSTOM RENDER";
+        generatedCode = `/* CSS Configuration for ${currentTool} */\n.element {\n  display: block;\n}`;
       }
 
-      codeBlock.className = `language-${codeLanguage}`;
       codeBlock.textContent = generatedCode;
-      
-      if (window.Prism) {
-        Prism.highlightElement(codeBlock);
-      }
+      if (window.Prism) Prism.highlightElement(codeBlock);
     }
 
     function copyCode() {
