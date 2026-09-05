@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Estilos & Tokens Web</title>
+  <title>Dev & Design Code Generator Suite</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <style>
     :root {
       --bg-dark: #0f172a;
-      --card-bg: #1e293b;
+      --panel-bg: #1e293b;
       --accent: #38bdf8;
       --text: #f8fafc;
+      --text-muted: #94a3b8;
       --border: #334155;
-      --font-mono: 'Courier New', Courier, monospace;
+      --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
     }
 
     * {
@@ -31,248 +33,72 @@
     }
 
     header {
-      padding: 1rem 2rem;
+      padding: 0.8rem 1.5rem;
       border-bottom: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(8px);
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    /* Pestañas de navegación de módulos */
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+      font-weight: 600;
     }
 
     .app-container {
       display: grid;
-      grid-template-columns: 320px 1fr 380px;
+      grid-template-columns: 320px 1fr 400px;
       flex: 1;
       overflow: hidden;
     }
 
     .panel {
-      padding: 1.5rem;
+      padding: 1.25rem;
       border-right: 1px solid var(--border);
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
 
     .panel:last-child {
       border-right: none;
     }
 
-    h2 {
-      font-size: 1.1rem;
+    .panel-title {
+      font-size: 0.95rem;
       margin-bottom: 1rem;
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
-    .control-group {
-      margin-bottom: 1.25rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      color: #94a3b8;
-    }
-
-    input[type="text"], input[type="color"], select, input[type="range"] {
-      width: 100%;
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.5rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-    }
-
-    .preview-area {
-      display: flex;
+    .module-controls {
+      display: none;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: #020617;
-      gap: 1.5rem;
-    }
-
-    /* Componente dinámico sujeto a la vista previa */
-    .sample-card {
-      padding: 2rem;
-      border-radius: var(--preview-radius, 8px);
-      background-color: var(--preview-bg, #1e293b);
-      border: 1px solid var(--preview-color, #38bdf8);
-      max-width: 320px;
-      width: 100%;
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-
-    .sample-btn {
-      margin-top: 1rem;
-      padding: 0.5rem 1.5rem;
-      border: none;
-      border-radius: calc(var(--preview-radius, 8px) / 2);
-      background-color: var(--preview-color, #38bdf8);
-      color: #0f172a;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    pre {
-      background: #020617;
-      padding: 1rem;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: #a7f3d0;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-
-    .copy-btn {
-      width: 100%;
-      margin-top: 1rem;
-      padding: 0.6rem;
-      background: var(--accent);
-      color: #0f172a;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .copy-btn:hover {
-      opacity: 0.9;
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <h1>Web Code & Token Generator</h1>
-  </header>
-
-  <div class="app-container">
-    <section class="panel">
-      <h2>Parámetros</h2>
-      
-      <div class="control-group">
-        <label for="primaryColor">Color Primario</label>
-        <input type="color" id="primaryColor" value="#38bdf8">
-      </div>
-
-      <div class="control-group">
-        <label for="cardBg">Fondo de Tarjeta</label>
-        <input type="color" id="cardBg" value="#1e293b">
-      </div>
-
-      <div class="control-group">
-        <label for="borderRadius">Borde Redondeado (px)</label>
-        <input type="range" id="borderRadius" min="0" max="24" value="8">
-      </div>
-
-      <div class="control-group">
-        <label for="outputFormat">Formato de Salida</label>
-        <select id="outputFormat">
-          <option value="css">CSS Variables</option>
-          <option value="json">JSON (DTCG Tokens)</option>
-          <option value="tailwind">Tailwind v4 Theme</option>
-        </select>
-      </div>
-    </section>
-
-    <section class="panel preview-area">
-      <div class="sample-card" id="previewCard">
-        <h3>Componente Demo</h3>
-        <p style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.9rem;">
-          Vista previa en tiempo real de los componentes generados.
-        </p>
-        <button class="sample-btn">Acción</button>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2>Código Generado</h2>
-      <pre id="codeOutput"></pre>
-      <button class="copy-btn" onclick="copyToClipboard()">Copiar Código</button>
-    </section>
-  </div>
-
-  <script>
-    // Referencias al DOM
-    const primaryColorInput = document.getElementById('primaryColor');
-    const cardBgInput = document.getElementById('cardBg');
-    const borderRadiusInput = document.getElementById('borderRadius');
-    const outputFormatSelect = document.getElementById('outputFormat');
-    const codeOutput = document.getElementById('codeOutput');
-    const previewCard = document.getElementById('previewCard');
-
-    // Estado global de la app
-    const state = {
-      primaryColor: primaryColorInput.value,
-      cardBg: cardBgInput.value,
-      borderRadius: borderRadiusInput.value,
-      format: outputFormatSelect.value
-    };
-
-    // Actualizar vista previa y código
-    function updateGenerator() {
-      // 1. Aplicar cambios al CSS de la vista previa
-      previewCard.style.setProperty('--preview-color', state.primaryColor);
-      previewCard.style.setProperty('--preview-bg', state.cardBg);
-      previewCard.style.setProperty('--preview-radius', `${state.borderRadius}px`);
-
-      // 2. Generar el código según el formato seleccionado
-      let generatedCode = '';
-
-      if (state.format === 'css') {
-        generatedCode = `:root {\n  --color-primary: ${state.primaryColor};\n  --color-surface: ${state.cardBg};\n  --radius-md: ${state.borderRadius}px;\n}`;
-      } else if (state.format === 'json') {
-        const jsonTokens = {
-          color: {
-            primary: { value: state.primaryColor, type: "color" },
-            surface: { value: state.cardBg, type: "color" }
-          },
-          borderRadius: {
-            md: { value: `${state.borderRadius}px`, type: "dimension" }
-          }
-        };
-        generatedCode = JSON.stringify(jsonTokens, null, 2);
-      } else if (state.format === 'tailwind') {
-        generatedCode = `@theme {\n  --color-primary: ${state.primaryColor};\n  --color-surface: ${state.cardBg};\n  --radius-md: ${state.borderRadius}px;\n}`;
-      }
-
-      codeOutput.textContent = generatedCode;
-    }
-
-    // Event Listeners para actualizar en tiempo real
-    primaryColorInput.addEventListener('input', (e) => {
-      state.primaryColor = e.target.value;
-      updateGenerator();
-    });
-
-    cardBgInput.addEventListener('input', (e) => {
-      state.cardBg = e.target.value;
-      updateGenerator();
-    });
-
-    borderRadiusInput.addEventListener('input', (e) => {
-      state.borderRadius = e.target.value;
-      updateGenerator();
-    });
-
-    outputFormatSelect.addEventListener('change', (e) => {
-      state.format = e.target.value;
-      updateGenerator();
-    });
-
-    // Función para copiar al portapapeles
-    function copyToClipboard() {
-      navigator.clipboard.writeText(codeOutput.textContent).then(() => {
-        alert('¡Código copiado al portapapeles!');
-      });
-    }
-
-    // Inicialización
-    updateGenerator();
-  </script>
-</body>
-</html>
+      gap: 1
