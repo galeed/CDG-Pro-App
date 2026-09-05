@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDG Pro App — Dev & JS/TS Edition</title>
+  <title>CDG Pro App — Dev, JS/TS & HTML Edition</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
@@ -495,7 +495,7 @@
       </button>
 
       <button class="dev-modal-btn" onclick="toggleDevModal(true)">
-        GUIDES HUB [19 MODES]
+        GUIDES HUB [22 MODES]
       </button>
     </div>
   </header>
@@ -505,6 +505,12 @@
       <div class="panel-title">[01] SELECCIÓN DE MÓDULO</div>
       
       <select id="toolSelector" class="tool-select" onchange="switchTool(this.value)">
+        <optgroup label="HTML (3 GUIDES)">
+          <option value="html_entities">HTML ENTITIES</option>
+          <option value="html_aria">HTML ACCESSIBILITY & ARIA</option>
+          <option value="html_media">HTML MEDIA ELEMENTS</option>
+        </optgroup>
+
         <optgroup label="JAVASCRIPT & TYPESCRIPT (7 GUIDES)">
           <option value="js_array">JS ARRAY METHODS</option>
           <option value="js_modules">JS ES MODULES</option>
@@ -764,10 +770,10 @@
         <div class="control-group">
           <label>TARGET COMPILER / RUNTIME</label>
           <select id="devTarget" onchange="render()">
+            <option value="html5">HTML5 / MODERN MARKUP</option>
             <option value="es6">ES6+ / MODERN JS</option>
             <option value="ts">TYPESCRIPT 5.x</option>
             <option value="node">NODE.JS RUNTIME</option>
-            <option value="browser">BROWSER CONSOLE</option>
           </select>
         </div>
       </div>
@@ -787,15 +793,15 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <span class="panel-title" style="margin:0;">[02] EXPORT CODE</span>
         <select id="exportFormat" style="width: 130px; padding: 0.3rem;" onchange="render()">
+          <option value="html">HTML / MARKUP</option>
           <option value="js">JS / TS CODE</option>
           <option value="css">CSS / CONFIG</option>
           <option value="json">JSON</option>
-          <option value="md">MARKDOWN</option>
         </select>
       </div>
 
       <div class="code-wrapper">
-        <pre><code id="codeBlock" class="language-javascript"></code></pre>
+        <pre><code id="codeBlock" class="language-html"></code></pre>
       </div>
       <button class="copy-btn" onclick="copyCode()">COPY CODE</button>
     </section>
@@ -809,12 +815,31 @@
       </div>
 
       <div class="modal-tabs">
-        <button class="tab-btn active" onclick="switchModalTab('jsts')">JAVASCRIPT & TYPESCRIPT (7)</button>
+        <button class="tab-btn active" onclick="switchModalTab('html')">HTML (3)</button>
+        <button class="tab-btn" onclick="switchModalTab('jsts')">JS & TS (7)</button>
         <button class="tab-btn" onclick="switchModalTab('dev')">DEVELOPMENT (12)</button>
       </div>
 
       <div class="modal-grid-container">
-        <div class="modal-grid active" id="tab-jsts">
+        <div class="modal-grid active" id="tab-html">
+          <div class="guide-card" onclick="selectGuide('html_entities')">
+            <div class="guide-icon">📖</div>
+            <div class="guide-title">HTML Entities</div>
+            <div class="guide-desc">Complete HTML entities reference with symbols, arrows, and math operators.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('html_aria')">
+            <div class="guide-icon">🕒</div>
+            <div class="guide-title">HTML Accessibility & ARIA</div>
+            <div class="guide-desc">Complete ARIA reference with roles, states, properties, and accessibility best practices.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('html_media')">
+            <div class="guide-icon">🎈</div>
+            <div class="guide-title">HTML Media Elements</div>
+            <div class="guide-desc">Complete guide to video, audio, picture elements, responsive images, and lazy loading.</div>
+          </div>
+        </div>
+
+        <div class="modal-grid" id="tab-jsts">
           <div class="guide-card" onclick="selectGuide('js_array')">
             <div class="guide-icon">📋</div>
             <div class="guide-title">JavaScript Array Methods</div>
@@ -919,12 +944,13 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.css"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
   <script>
-    let currentTool = 'js_array';
+    let currentTool = 'html_entities';
     let isMobileView = false;
 
     const demoCard = document.getElementById('demoCard');
@@ -966,12 +992,13 @@
       currentTool = toolName;
       document.querySelectorAll('.module-controls').forEach(ctl => ctl.classList.remove('active'));
 
-      const isDevOrJs = [
+      const isDevOrJsOrHtml = [
+        'html_entities','html_aria','html_media',
         'js_array','js_modules','js_promises','ts_basics','ts_generics','ts_utilities','js_console',
         'fable','launch','context','openclaw','shortcuts','git','webperf','claudeskill','cursorrules','copilot','gemini','windsurf'
       ].includes(toolName);
 
-      if (isDevOrJs) {
+      if (isDevOrJsOrHtml) {
         document.getElementById('controls-dev-generic').classList.add('active');
       } else {
         const ctrlEl = document.getElementById(`controls-${toolName}`);
@@ -990,10 +1017,30 @@
     function render() {
       resetDemoStyles();
       let generatedCode = '';
-      let codeLang = 'javascript';
+      let codeLang = 'html';
 
-      // Diccionario de Guías JS/TS y Dev
+      // Diccionario Completo de Guías (HTML, JS/TS, Dev)
       const guidesData = {
+        // --- HTML (3) ---
+        html_entities: {
+          title: "HTML ENTITIES",
+          desc: "Symbols, Arrows & Special Operators",
+          lang: "html",
+          code: `\n<p>&copy; 2026 Brand Name</p>\n<p>Price: &euro;49.99 &bull; &infin; Lifetime Access</p>\n<p>Navigation: Home &rarr; Dashboard &gt; Settings</p>`
+        },
+        html_aria: {
+          title: "HTML ACCESSIBILITY & ARIA",
+          desc: "Roles, States & Accessibility Patterns",
+          lang: "html",
+          code: `\n<div role="dialog" aria-labelledby="dialogTitle" aria-modal="true">\n  <h2 id="dialogTitle">System Notification</h2>\n  <button aria-label="Close dialog" onclick="close()">x</button>\n</div>`
+        },
+        html_media: {
+          title: "HTML MEDIA ELEMENTS",
+          desc: "Responsive Video, Audio & Lazy Loading",
+          lang: "html",
+          code: `\n<picture>\n  <source srcset="hero-large.webp" media="(min-width: 800px)" type="image/webp">\n  <img src="hero-small.jpg" alt="Hero banner" loading="lazy" width="800" height="450">\n</picture>`
+        },
+
         // --- JAVASCRIPT & TYPESCRIPT (7) ---
         js_array: {
           title: "JS ARRAY METHODS",
