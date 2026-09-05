@@ -49,7 +49,6 @@
       font-weight: 700;
     }
 
-    /* Navigation Tabs */
     .nav-tabs {
       display: flex;
       gap: 0.5rem;
@@ -75,7 +74,7 @@
 
     .app-container {
       display: grid;
-      grid-template-columns: 320px 1fr 420px;
+      grid-template-columns: 340px 1fr 420px;
       flex: 1;
       overflow: hidden;
     }
@@ -99,6 +98,17 @@
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+
+    .tool-select {
+      width: 100%;
+      padding: 0.6rem;
+      background: var(--panel-bg);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      border-radius: 6px;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
     }
 
     .module-controls {
@@ -141,33 +151,36 @@
       justify-content: center;
       background: #020617;
       position: relative;
+      padding: 2rem;
     }
 
-    /* Componente de Vista Previa */
+    /* Elemento de prueba dinámico */
     .demo-element {
       padding: 2rem;
-      border-radius: var(--pv-radius, 8px);
-      background-color: var(--pv-bg, #1e293b);
-      border: 1px solid var(--pv-color, #38bdf8);
-      box-shadow: var(--pv-shadow, none);
-      max-width: 280px;
+      max-width: 320px;
       width: 100%;
       text-align: center;
-      transition: box-shadow 0.15s ease, background-color 0.15s ease;
+      color: #ffffff;
+      background-color: #1e293b;
+      border-radius: 12px;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
     }
 
     .demo-btn {
-      margin-top: 1rem;
       padding: 0.5rem 1.25rem;
       border: none;
-      border-radius: calc(var(--pv-radius, 8px) / 2);
-      background-color: var(--pv-color, #38bdf8);
+      border-radius: 6px;
+      background-color: var(--accent);
       color: #0f172a;
       font-weight: bold;
       cursor: pointer;
     }
 
-    /* Corrección de estilos para el bloque de código */
     .code-wrapper {
       flex: 1;
       display: flex;
@@ -214,16 +227,33 @@
   <header>
     <h1>CDG Pro App</h1>
     <nav class="nav-tabs">
-      <button class="tab-btn active" onclick="switchModule(event, 'tokens')">Tokens & Estilos</button>
-      <button class="tab-btn" onclick="switchModule(event, 'shadow')">Box Shadow</button>
-      <button class="tab-btn" onclick="switchModule(event, 'converter')">Px a Rem</button>
+      <button class="tab-btn active">CSS Suite (15 Estilos)</button>
     </nav>
   </header>
 
   <div class="app-container">
     <section class="panel">
+      <div class="panel-title">Herramientas CSS</div>
+      
+      <select id="toolSelector" class="tool-select" onchange="switchTool(this.value)">
+        <option value="tokens">1. Design Tokens & UI</option>
+        <option value="shadow">2. Box Shadow (Sombras)</option>
+        <option value="glass">3. Glassmorphism</option>
+        <option value="gradient">4. Gradiante Lineal / Radial</option>
+        <option value="border">5. Custom Borders</option>
+        <option value="textShadow">6. Text Shadow</option>
+        <option value="transform">7. Transform 2D / 3D</option>
+        <option value="filter">8. CSS Filters</option>
+        <option value="clipPath">9. Clip Path (Recortes)</option>
+        <option value="grid">10. CSS Grid Layout</option>
+        <option value="flex">11. Flexbox Alignment</option>
+        <option value="aspect">12. Aspect Ratio</option>
+        <option value="scroll">13. Custom Scrollbar</option>
+        <option value="cursor">14. Custom Cursor</option>
+        <option value="converter">15. Conversor PX / REM</option>
+      </select>
+
       <div id="controls-tokens" class="module-controls active">
-        <div class="panel-title">Tokens & UI</div>
         <div class="control-group">
           <label for="tokColor">Color Accento</label>
           <input type="color" id="tokColor" value="#38bdf8">
@@ -233,43 +263,203 @@
           <input type="color" id="tokBg" value="#1e293b">
         </div>
         <div class="control-group">
-          <label for="tokRadius">Border Radius: <span id="valRadius">8px</span></label>
+          <label for="tokRadius">Border Radius: <span id="valTokRadius">8px</span></label>
           <input type="range" id="tokRadius" min="0" max="30" value="8">
         </div>
       </div>
 
       <div id="controls-shadow" class="module-controls">
-        <div class="panel-title">Sombra CSS</div>
         <div class="control-group">
-          <label for="shdOffsetX">Offset X: <span id="valOffsetX">0px</span></label>
-          <input type="range" id="shdOffsetX" min="-50" max="50" value="0">
+          <label for="shdX">Offset X: <span id="valShdX">0px</span></label>
+          <input type="range" id="shdX" min="-50" max="50" value="0">
         </div>
         <div class="control-group">
-          <label for="shdOffsetY">Offset Y: <span id="valOffsetY">10px</span></label>
-          <input type="range" id="shdOffsetY" min="-50" max="50" value="10">
+          <label for="shdY">Offset Y: <span id="valShdY">10px</span></label>
+          <input type="range" id="shdY" min="-50" max="50" value="10">
         </div>
         <div class="control-group">
-          <label for="shdBlur">Blur Radius: <span id="valBlur">15px</span></label>
+          <label for="shdBlur">Blur Radius: <span id="valShdBlur">15px</span></label>
           <input type="range" id="shdBlur" min="0" max="100" value="15">
-        </div>
-        <div class="control-group">
-          <label for="shdSpread">Spread Radius: <span id="valSpread">-3px</span></label>
-          <input type="range" id="shdSpread" min="-30" max="30" value="-3">
         </div>
         <div class="control-group">
           <label for="shdColor">Color Sombra</label>
           <input type="color" id="shdColor" value="#000000">
         </div>
+      </div>
+
+      <div id="controls-glass" class="module-controls">
         <div class="control-group">
-          <label for="shdOpacity">Opacidad: <span id="valOpacity">0.5</span></label>
-          <input type="range" id="shdOpacity" min="0" max="1" step="0.05" value="0.5">
+          <label for="glsBlur">Backdrop Blur: <span id="valGlsBlur">10px</span></label>
+          <input type="range" id="glsBlur" min="0" max="30" value="10">
+        </div>
+        <div class="control-group">
+          <label for="glsOpacity">Opacidad Fondo: <span id="valGlsOp">0.2</span></label>
+          <input type="range" id="glsOpacity" min="0" max="1" step="0.05" value="0.2">
+        </div>
+      </div>
+
+      <div id="controls-gradient" class="module-controls">
+        <div class="control-group">
+          <label for="grdColor1">Color 1</label>
+          <input type="color" id="grdColor1" value="#38bdf8">
+        </div>
+        <div class="control-group">
+          <label for="grdColor2">Color 2</label>
+          <input type="color" id="grdColor2" value="#818cf8">
+        </div>
+        <div class="control-group">
+          <label for="grdAngle">Ángulo: <span id="valGrdAngle">90deg</span></label>
+          <input type="range" id="grdAngle" min="0" max="360" value="90">
+        </div>
+      </div>
+
+      <div id="controls-border" class="module-controls">
+        <div class="control-group">
+          <label for="brdWidth">Grosor Borde: <span id="valBrdWidth">2px</span></label>
+          <input type="range" id="brdWidth" min="1" max="10" value="2">
+        </div>
+        <div class="control-group">
+          <label for="brdStyle">Estilo</label>
+          <select id="brdStyle">
+            <option value="solid">Solid</option>
+            <option value="dashed">Dashed</option>
+            <option value="dotted">Dotted</option>
+            <option value="double">Double</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="brdColor">Color Borde</label>
+          <input type="color" id="brdColor" value="#38bdf8">
+        </div>
+      </div>
+
+      <div id="controls-textShadow" class="module-controls">
+        <div class="control-group">
+          <label for="txtShdX">Offset X: <span id="valTxtX">2px</span></label>
+          <input type="range" id="txtShdX" min="-20" max="20" value="2">
+        </div>
+        <div class="control-group">
+          <label for="txtShdY">Offset Y: <span id="valTxtY">2px</span></label>
+          <input type="range" id="txtShdY" min="-20" max="20" value="2">
+        </div>
+        <div class="control-group">
+          <label for="txtShdBlur">Blur: <span id="valTxtBlur">4px</span></label>
+          <input type="range" id="txtShdBlur" min="0" max="20" value="4">
+        </div>
+        <div class="control-group">
+          <label for="txtShdColor">Color Texto</label>
+          <input type="color" id="txtShdColor" value="#38bdf8">
+        </div>
+      </div>
+
+      <div id="controls-transform" class="module-controls">
+        <div class="control-group">
+          <label for="trfRotate">Rotación: <span id="valTrfRot">5deg</span></label>
+          <input type="range" id="trfRotate" min="-180" max="180" value="5">
+        </div>
+        <div class="control-group">
+          <label for="trfScale">Escala: <span id="valTrfScl">1</span></label>
+          <input type="range" id="trfScale" min="0.5" max="1.5" step="0.05" value="1">
+        </div>
+      </div>
+
+      <div id="controls-filter" class="module-controls">
+        <div class="control-group">
+          <label for="fltBlur">Blur: <span id="valFltBlur">0px</span></label>
+          <input type="range" id="fltBlur" min="0" max="10" value="0">
+        </div>
+        <div class="control-group">
+          <label for="fltBright">Brillo: <span id="valFltBrt">100%</span></label>
+          <input type="range" id="fltBright" min="0" max="200" value="100">
+        </div>
+        <div class="control-group">
+          <label for="fltContrast">Contraste: <span id="valFltCnt">100%</span></label>
+          <input type="range" id="fltContrast" min="0" max="200" value="100">
+        </div>
+      </div>
+
+      <div id="controls-clipPath" class="module-controls">
+        <div class="control-group">
+          <label for="clipShape">Forma de Recorte</label>
+          <select id="clipShape">
+            <option value="none">Ninguno</option>
+            <option value="circle(50% at 50% 50%)">Círculo</option>
+            <option value="polygon(50% 0%, 0% 100%, 100% 100%)">Triángulo</option>
+            <option value="polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)">Pentágono</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="controls-grid" class="module-controls">
+        <div class="control-group">
+          <label for="grdCols">Columnas: <span id="valGrdCols">2</span></label>
+          <input type="range" id="grdCols" min="1" max="4" value="2">
+        </div>
+        <div class="control-group">
+          <label for="grdGap">Gap: <span id="valGrdGap">10px</span></label>
+          <input type="range" id="grdGap" min="0" max="30" value="10">
+        </div>
+      </div>
+
+      <div id="controls-flex" class="module-controls">
+        <div class="control-group">
+          <label for="flxJustify">Justify Content</label>
+          <select id="flxJustify">
+            <option value="center">Center</option>
+            <option value="flex-start">Flex Start</option>
+            <option value="flex-end">Flex End</option>
+            <option value="space-between">Space Between</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="flxAlign">Align Items</label>
+          <select id="flxAlign">
+            <option value="center">Center</option>
+            <option value="flex-start">Flex Start</option>
+            <option value="flex-end">Flex End</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="controls-aspect" class="module-controls">
+        <div class="control-group">
+          <label for="aspRatio">Relación de Aspecto</label>
+          <select id="aspRatio">
+            <option value="1 / 1">1 / 1 (Cuadrado)</option>
+            <option value="16 / 9">16 / 9 (Video)</option>
+            <option value="4 / 3">4 / 3 (Estándar)</option>
+            <option value="21 / 9">21 / 9 (Ultrawide)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="controls-scroll" class="module-controls">
+        <div class="control-group">
+          <label for="sclWidth">Ancho Scrollbar: <span id="valSclW">8px</span></label>
+          <input type="range" id="sclWidth" min="4" max="16" value="8">
+        </div>
+        <div class="control-group">
+          <label for="sclColor">Color Scrollbar</label>
+          <input type="color" id="sclColor" value="#38bdf8">
+        </div>
+      </div>
+
+      <div id="controls-cursor" class="module-controls">
+        <div class="control-group">
+          <label for="curType">Tipo de Cursor</label>
+          <select id="curType">
+            <option value="pointer">Pointer</option>
+            <option value="crosshair">Crosshair</option>
+            <option value="grab">Grab</option>
+            <option value="not-allowed">Not Allowed</option>
+            <option value="zoom-in">Zoom In</option>
+          </select>
         </div>
       </div>
 
       <div id="controls-converter" class="module-controls">
-        <div class="panel-title">Conversor PX / REM</div>
         <div class="control-group">
-          <label for="basePx">Tamaño Base Font-Size (px)</label>
+          <label for="basePx">Tamaño Base (px)</label>
           <input type="number" id="basePx" value="16">
         </div>
         <div class="control-group">
@@ -281,9 +471,9 @@
 
     <section class="panel preview-area">
       <div class="demo-element" id="demoCard">
-        <h3>Vista Previa</h3>
-        <p style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">
-          Comprobación interactiva en tiempo real.
+        <h3 id="demoTitle">Vista Previa</h3>
+        <p id="demoText" style="color: #94a3b8; font-size: 0.85rem;">
+          Elemento de prueba interactivo.
         </p>
         <button class="demo-btn">Acción</button>
       </div>
@@ -314,130 +504,194 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
 
   <script>
-    let currentModule = 'tokens';
+    let currentTool = 'tokens';
 
     const demoCard = document.getElementById('demoCard');
+    const demoTitle = document.getElementById('demoTitle');
     const codeBlock = document.getElementById('codeBlock');
     const exportFormatSelect = document.getElementById('exportFormat');
 
-    function switchModule(event, moduleName) {
-      currentModule = moduleName;
-      
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    function switchTool(toolName) {
+      currentTool = toolName;
       document.querySelectorAll('.module-controls').forEach(ctl => ctl.classList.remove('active'));
-
-      event.target.classList.add('active');
-      document.getElementById(`controls-${moduleName}`).classList.add('active');
-
+      document.getElementById(`controls-${toolName}`).classList.add('active');
       render();
     }
 
-    function hexToRgba(hex, alpha) {
-      const r = parseInt(hex.slice(1, 3), 16);
-      const g = parseInt(hex.slice(3, 5), 16);
-      const b = parseInt(hex.slice(5, 7), 16);
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    function resetDemoStyles() {
+      demoCard.style = '';
+      demoCard.className = 'demo-element';
+      demoTitle.style = '';
     }
 
     function render() {
+      resetDemoStyles();
       let generatedCode = '';
       let codeLanguage = 'css';
       const format = exportFormatSelect.value;
 
-      if (currentModule === 'tokens') {
+      if (currentTool === 'tokens') {
         const color = document.getElementById('tokColor').value;
         const bg = document.getElementById('tokBg').value;
         const radius = document.getElementById('tokRadius').value;
+        document.getElementById('valTokRadius').innerText = `${radius}px`;
 
-        document.getElementById('valRadius').innerText = `${radius}px`;
+        demoCard.style.backgroundColor = bg;
+        demoCard.style.borderColor = color;
+        demoCard.style.borderWidth = '1px';
+        demoCard.style.borderStyle = 'solid';
+        demoCard.style.borderRadius = `${radius}px`;
 
-        demoCard.style.setProperty('--pv-color', color);
-        demoCard.style.setProperty('--pv-bg', bg);
-        demoCard.style.setProperty('--pv-radius', `${radius}px`);
-        demoCard.style.setProperty('--pv-shadow', 'none');
+        if (format === 'css') generatedCode = `:root {\n  --primary-color: ${color};\n  --bg-surface: ${bg};\n  --border-radius: ${radius}px;\n}`;
+        else if (format === 'scss') generatedCode = `$primary-color: ${color};\n$bg-surface: ${bg};\n$border-radius: ${radius}px;`;
+        else if (format === 'json') generatedCode = JSON.stringify({ color: { primary: { value: color } }, radius: { value: `${radius}px` } }, null, 2);
+        else if (format === 'ts') generatedCode = `export const tokens = { primaryColor: "${color}", bgSurface: "${bg}", borderRadius: "${radius}px" } as const;`;
+        else if (format === 'tailwind') generatedCode = `@theme {\n  --color-primary: ${color};\n  --color-surface: ${bg};\n  --radius-default: ${radius}px;\n}`;
 
-        if (format === 'css') {
-          codeLanguage = 'css';
-          generatedCode = `:root {\n  --primary-color: ${color};\n  --bg-surface: ${bg};\n  --border-radius: ${radius}px;\n}`;
-        } else if (format === 'scss') {
-          codeLanguage = 'scss';
-          generatedCode = `$primary-color: ${color};\n$bg-surface: ${bg};\n$border-radius: ${radius}px;`;
-        } else if (format === 'json') {
-          codeLanguage = 'json';
-          generatedCode = JSON.stringify({
-            color: { primary: { value: color, type: "color" }, surface: { value: bg, type: "color" } },
-            borderRadius: { default: { value: `${radius}px`, type: "dimension" } }
-          }, null, 2);
-        } else if (format === 'ts') {
-          codeLanguage = 'typescript';
-          generatedCode = `export const designTokens = {\n  primaryColor: "${color}",\n  bgSurface: "${bg}",\n  borderRadius: "${radius}px",\n} as const;`;
-        } else if (format === 'tailwind') {
-          codeLanguage = 'css';
-          generatedCode = `@theme {\n  --color-primary: ${color};\n  --color-surface: ${bg};\n  --radius-default: ${radius}px;\n}`;
-        }
-
-      } else if (currentModule === 'shadow') {
-        const x = document.getElementById('shdOffsetX').value;
-        const y = document.getElementById('shdOffsetY').value;
+      } else if (currentTool === 'shadow') {
+        const x = document.getElementById('shdX').value;
+        const y = document.getElementById('shdY').value;
         const blur = document.getElementById('shdBlur').value;
-        const spread = document.getElementById('shdSpread').value;
-        const colorHex = document.getElementById('shdColor').value;
-        const opacity = document.getElementById('shdOpacity').value;
+        const color = document.getElementById('shdColor').value;
+        document.getElementById('valShdX').innerText = `${x}px`;
+        document.getElementById('valShdY').innerText = `${y}px`;
+        document.getElementById('valShdBlur').innerText = `${blur}px`;
 
-        document.getElementById('valOffsetX').innerText = `${x}px`;
-        document.getElementById('valOffsetY').innerText = `${y}px`;
-        document.getElementById('valBlur').innerText = `${blur}px`;
-        document.getElementById('valSpread').innerText = `${spread}px`;
-        document.getElementById('valOpacity').innerText = opacity;
+        const shadowVal = `${x}px ${y}px ${blur}px ${color}`;
+        demoCard.style.boxShadow = shadowVal;
 
-        const rgbaColor = hexToRgba(colorHex, opacity);
-        const shadowVal = `${x}px ${y}px ${blur}px ${spread}px ${rgbaColor}`;
+        if (format === 'css') generatedCode = `.box-shadow {\n  box-shadow: ${shadowVal};\n}`;
+        else if (format === 'scss') generatedCode = `$shadow: ${shadowVal};\n.box-shadow {\n  box-shadow: $shadow;\n}`;
+        else if (format === 'json') generatedCode = JSON.stringify({ shadow: { value: shadowVal } }, null, 2);
+        else if (format === 'ts') generatedCode = `export const shadows = { main: "${shadowVal}" } as const;`;
+        else if (format === 'tailwind') generatedCode = `@theme {\n  --shadow-main: ${shadowVal};\n}`;
 
-        demoCard.style.setProperty('--pv-shadow', shadowVal);
+      } else if (currentTool === 'glass') {
+        const blur = document.getElementById('glsBlur').value;
+        const op = document.getElementById('glsOpacity').value;
+        document.getElementById('valGlsBlur').innerText = `${blur}px`;
+        document.getElementById('valGlsOp').innerText = op;
 
-        if (format === 'css') {
-          codeLanguage = 'css';
-          generatedCode = `.custom-shadow {\n  box-shadow: ${shadowVal};\n}`;
-        } else if (format === 'scss') {
-          codeLanguage = 'scss';
-          generatedCode = `$box-shadow-custom: ${shadowVal};\n\n.custom-shadow {\n  box-shadow: $box-shadow-custom;\n}`;
-        } else if (format === 'json') {
-          codeLanguage = 'json';
-          generatedCode = JSON.stringify({ shadow: { custom: { value: shadowVal, type: "shadow" } } }, null, 2);
-        } else if (format === 'ts') {
-          codeLanguage = 'typescript';
-          generatedCode = `export const shadows = {\n  custom: "${shadowVal}",\n} as const;`;
-        } else if (format === 'tailwind') {
-          codeLanguage = 'css';
-          generatedCode = `@theme {\n  --shadow-custom: ${shadowVal};\n}`;
-        }
+        demoCard.style.background = `rgba(255, 255, 255, ${op})`;
+        demoCard.style.backdropFilter = `blur(${blur}px)`;
+        demoCard.style.border = `1px solid rgba(255, 255, 255, 0.2)`;
 
-      } else if (currentModule === 'converter') {
+        generatedCode = `.glassmorphism {\n  background: rgba(255, 255, 255, ${op});\n  backdrop-filter: blur(${blur}px);\n  border: 1px solid rgba(255, 255, 255, 0.2);\n}`;
+
+      } else if (currentTool === 'gradient') {
+        const c1 = document.getElementById('grdColor1').value;
+        const c2 = document.getElementById('grdColor2').value;
+        const angle = document.getElementById('grdAngle').value;
+        document.getElementById('valGrdAngle').innerText = `${angle}deg`;
+
+        const gradVal = `linear-gradient(${angle}deg, ${c1}, ${c2})`;
+        demoCard.style.background = gradVal;
+
+        generatedCode = `.gradient-bg {\n  background: ${gradVal};\n}`;
+
+      } else if (currentTool === 'border') {
+        const w = document.getElementById('brdWidth').value;
+        const s = document.getElementById('brdStyle').value;
+        const c = document.getElementById('brdColor').value;
+        document.getElementById('valBrdWidth').innerText = `${w}px`;
+
+        demoCard.style.border = `${w}px ${s} ${c}`;
+
+        generatedCode = `.custom-border {\n  border: ${w}px ${s} ${c};\n}`;
+
+      } else if (currentTool === 'textShadow') {
+        const x = document.getElementById('txtShdX').value;
+        const y = document.getElementById('txtShdY').value;
+        const blur = document.getElementById('txtShdBlur').value;
+        const color = document.getElementById('txtShdColor').value;
+        document.getElementById('valTxtX').innerText = `${x}px`;
+        document.getElementById('valTxtY').innerText = `${y}px`;
+        document.getElementById('valTxtBlur').innerText = `${blur}px`;
+
+        const txtShdVal = `${x}px ${y}px ${blur}px ${color}`;
+        demoTitle.style.textShadow = txtShdVal;
+
+        generatedCode = `.text-shadow {\n  text-shadow: ${txtShdVal};\n}`;
+
+      } else if (currentTool === 'transform') {
+        const rot = document.getElementById('trfRotate').value;
+        const scl = document.getElementById('trfScale').value;
+        document.getElementById('valTrfRot').innerText = `${rot}deg`;
+        document.getElementById('valTrfScl').innerText = scl;
+
+        const trfVal = `rotate(${rot}deg) scale(${scl})`;
+        demoCard.style.transform = trfVal;
+
+        generatedCode = `.transform {\n  transform: ${trfVal};\n}`;
+
+      } else if (currentTool === 'filter') {
+        const blur = document.getElementById('fltBlur').value;
+        const bright = document.getElementById('fltBright').value;
+        const contrast = document.getElementById('fltContrast').value;
+        document.getElementById('valFltBlur').innerText = `${blur}px`;
+        document.getElementById('valFltBrt').innerText = `${bright}%`;
+        document.getElementById('valFltCnt').innerText = `${contrast}%`;
+
+        const fltVal = `blur(${blur}px) brightness(${bright}%) contrast(${contrast}%)`;
+        demoCard.style.filter = fltVal;
+
+        generatedCode = `.custom-filter {\n  filter: ${fltVal};\n}`;
+
+      } else if (currentTool === 'clipPath') {
+        const shape = document.getElementById('clipShape').value;
+        demoCard.style.clipPath = shape !== 'none' ? shape : 'none';
+
+        generatedCode = `.clipped {\n  clip-path: ${shape};\n}`;
+
+      } else if (currentTool === 'grid') {
+        const cols = document.getElementById('grdCols').value;
+        const gap = document.getElementById('grdGap').value;
+        document.getElementById('valGrdCols').innerText = cols;
+        document.getElementById('valGrdGap').innerText = `${gap}px`;
+
+        demoCard.style.display = 'grid';
+        demoCard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        demoCard.style.gap = `${gap}px`;
+
+        generatedCode = `.grid-container {\n  display: grid;\n  grid-template-columns: repeat(${cols}, 1fr);\n  gap: ${gap}px;\n}`;
+
+      } else if (currentTool === 'flex') {
+        const j = document.getElementById('flxJustify').value;
+        const a = document.getElementById('flxAlign').value;
+
+        demoCard.style.display = 'flex';
+        demoCard.style.justifyContent = j;
+        demoCard.style.alignItems = a;
+
+        generatedCode = `.flex-container {\n  display: flex;\n  justify-content: ${j};\n  align-items: ${a};\n}`;
+
+      } else if (currentTool === 'aspect') {
+        const ratio = document.getElementById('aspRatio').value;
+        demoCard.style.aspectRatio = ratio;
+
+        generatedCode = `.aspect-box {\n  aspect-ratio: ${ratio};\n}`;
+
+      } else if (currentTool === 'scroll') {
+        const w = document.getElementById('sclWidth').value;
+        const c = document.getElementById('sclColor').value;
+        document.getElementById('valSclW').innerText = `${w}px`;
+
+        generatedCode = `/* Scrollbar CSS */\n::-webkit-scrollbar {\n  width: ${w}px;\n}\n::-webkit-scrollbar-thumb {\n  background: ${c};\n  border-radius: 4px;\n}`;
+
+      } else if (currentTool === 'cursor') {
+        const type = document.getElementById('curType').value;
+        demoCard.style.cursor = type;
+
+        generatedCode = `.custom-cursor {\n  cursor: ${type};\n}`;
+
+      } else if (currentTool === 'converter') {
         const basePx = parseFloat(document.getElementById('basePx').value) || 16;
         const inputPx = parseFloat(document.getElementById('inputPx').value) || 0;
         const remVal = (inputPx / basePx).toFixed(4).replace(/\.?0+$/, '');
 
-        demoCard.style.setProperty('--pv-shadow', 'none');
-
-        if (format === 'css') {
-          codeLanguage = 'css';
-          generatedCode = `/* Base: ${basePx}px */\n.element {\n  font-size: ${remVal}rem; /* ${inputPx}px */\n}`;
-        } else if (format === 'scss') {
-          codeLanguage = 'scss';
-          generatedCode = `// Base: ${basePx}px\n$font-size-custom: ${remVal}rem;`;
-        } else if (format === 'json') {
-          codeLanguage = 'json';
-          generatedCode = JSON.stringify({ fontSize: { custom: { value: `${remVal}rem`, pixelEquivalent: `${inputPx}px` } } }, null, 2);
-        } else if (format === 'ts') {
-          codeLanguage = 'typescript';
-          generatedCode = `export const typography = {\n  customSize: "${remVal}rem", // ${inputPx}px\n} as const;`;
-        } else if (format === 'tailwind') {
-          codeLanguage = 'css';
-          generatedCode = `@theme {\n  --text-custom: ${remVal}rem;\n}`;
-        }
+        generatedCode = `/* Base: ${basePx}px */\n.element {\n  font-size: ${remVal}rem; /* ${inputPx}px */\n}`;
       }
 
-      // Actualizar clase de sintaxis y renderizar
       codeBlock.className = `language-${codeLanguage}`;
       codeBlock.textContent = generatedCode;
       
@@ -454,13 +708,11 @@
       });
     }
 
-    // Listeners
     document.querySelectorAll('input, select').forEach(input => {
       input.addEventListener('input', render);
       input.addEventListener('change', render);
     });
 
-    // Inicializar app
     render();
   </script>
 </body>
