@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDG Pro App</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <title>CDG Pro App — AAA24 Edition</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
     :root {
-      --bg-dark: #0f172a;
-      --panel-bg: #1e293b;
-      --accent: #38bdf8;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #334155;
-      --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+      --bg-main: #000000;
+      --panel-bg: #000000;
+      --border-color: #ffffff;
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      --accent-hover: #ffffff;
+      --font-mono: 'Space Mono', monospace;
     }
 
     * {
@@ -23,19 +25,22 @@
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text);
-      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-mono);
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
     }
 
+    /* Header Estilo AAA24 */
     header {
-      padding: 0.8rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.9);
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-main);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -44,48 +49,31 @@
 
     header h1 {
       font-size: 1.1rem;
-      color: var(--accent);
-      letter-spacing: 0.05em;
       font-weight: 700;
+      letter-spacing: -0.04em;
     }
 
-    .nav-tabs {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .tab-btn.active, .tab-btn:hover {
-      background: var(--accent);
-      color: #0f172a;
-      border-color: var(--accent);
-      font-weight: 600;
+    .status-badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
     }
 
     .app-container {
       display: grid;
-      grid-template-columns: 340px 1fr 420px;
+      grid-template-columns: 360px 1fr 440px;
       flex: 1;
       overflow: hidden;
     }
 
     .panel {
-      padding: 1.25rem;
-      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      border-right: 1px solid var(--border-color);
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      background-color: var(--bg-dark);
+      background-color: var(--bg-main);
     }
 
     .panel:last-child {
@@ -93,28 +81,33 @@
     }
 
     .panel-title {
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-      color: var(--accent);
-      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-muted);
       letter-spacing: 0.05em;
     }
 
+    /* Selector Brutalista */
     .tool-select {
       width: 100%;
-      padding: 0.6rem;
-      background: var(--panel-bg);
-      border: 1px solid var(--accent);
-      color: var(--text);
-      border-radius: 6px;
-      font-weight: 600;
-      margin-bottom: 1.2rem;
+      padding: 0.8rem;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 0;
+      margin-bottom: 1.5rem;
+      cursor: pointer;
+      outline: none;
     }
 
     .module-controls {
       display: none;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .module-controls.active {
@@ -124,346 +117,402 @@
     .control-group {
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.5rem;
     }
 
     label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
     }
 
-    input[type="text"], input[type="number"], input[type="color"], select, input[type="range"] {
+    /* Controles Tipográficos Nítidos */
+    input[type="text"], input[type="number"], select {
       width: 100%;
-      background: var(--panel-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.45rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      border-radius: 0;
+      outline: none;
     }
 
+    input[type="color"] {
+      -webkit-appearance: none;
+      border: 1px solid var(--border-color);
+      background: none;
+      width: 100%;
+      height: 38px;
+      cursor: pointer;
+      border-radius: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch {
+      border: none;
+    }
+
+    /* Range Input Estilo Técnico */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      background: var(--border-color);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 14px;
+      width: 14px;
+      background: var(--text-main);
+      border-radius: 0;
+      cursor: pointer;
+      margin-top: -6px;
+    }
+
+    /* Vista Previa */
     .preview-area {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #020617;
+      background: #080808;
       position: relative;
       padding: 2rem;
+      background-image: radial-gradient(#222 1px, transparent 0);
+      background-size: 16px 16px;
     }
 
-    /* Elemento de prueba dinámico */
     .demo-element {
-      padding: 2rem;
-      max-width: 320px;
+      padding: 2.5rem;
+      max-width: 340px;
       width: 100%;
       text-align: center;
       color: #ffffff;
-      background-color: #1e293b;
-      border-radius: 12px;
-      transition: all 0.15s ease;
+      background-color: #000000;
+      border: 1px solid var(--border-color);
+      border-radius: 0px;
+      transition: all 0.1s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .demo-btn {
-      padding: 0.5rem 1.25rem;
-      border: none;
-      border-radius: 6px;
-      background-color: var(--accent);
-      color: #0f172a;
+      padding: 0.6rem 1.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0;
+      background-color: var(--text-main);
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: bold;
+      text-transform: uppercase;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
 
+    .demo-btn:hover {
+      background-color: #000000;
+      color: var(--text-main);
+    }
+
+    /* Bloque de Código Estilo Terminal */
     .code-wrapper {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: #0d1117;
+      border: 1px solid var(--border-color);
+      background: #000000;
     }
 
     pre[class*="language-"] {
       margin: 0 !important;
-      padding: 1rem !important;
+      padding: 1.2rem !important;
       background: transparent !important;
       height: 100%;
       overflow: auto;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-family: var(--font-mono) !important;
+      font-size: 0.8rem !important;
+      text-transform: none !important;
     }
 
     code[class*="language-"] {
-      font-family: var(--font-mono);
+      font-family: var(--font-mono) !important;
+      text-transform: none !important;
     }
 
     .copy-btn {
-      margin-top: 1rem;
-      padding: 0.6rem;
-      background: var(--accent);
-      color: #0f172a;
-      border: none;
-      border-radius: 6px;
+      margin-top: 1.2rem;
+      padding: 0.8rem;
+      background: var(--text-main);
+      color: #000000;
+      border: 1px solid var(--border-color);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
       font-weight: bold;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: opacity 0.2s;
+      border-radius: 0;
+      transition: all 0.15s ease;
     }
 
     .copy-btn:hover {
-      opacity: 0.9;
+      background: #000000;
+      color: var(--text-main);
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>CDG Pro App</h1>
-    <nav class="nav-tabs">
-      <button class="tab-btn active">CSS Suite (15 Estilos)</button>
-    </nav>
+    <h1>CDG PRO APP / AAA24 SUITE</h1>
+    <span class="status-badge">BUILD 2.0</span>
   </header>
 
   <div class="app-container">
     <section class="panel">
-      <div class="panel-title">Herramientas CSS</div>
+      <div class="panel-title">[01] SELECCIÓN DE MÓDULO</div>
       
       <select id="toolSelector" class="tool-select" onchange="switchTool(this.value)">
-        <option value="tokens">1. Design Tokens & UI</option>
-        <option value="shadow">2. Box Shadow (Sombras)</option>
-        <option value="glass">3. Glassmorphism</option>
-        <option value="gradient">4. Gradiante Lineal / Radial</option>
-        <option value="border">5. Custom Borders</option>
-        <option value="textShadow">6. Text Shadow</option>
-        <option value="transform">7. Transform 2D / 3D</option>
-        <option value="filter">8. CSS Filters</option>
-        <option value="clipPath">9. Clip Path (Recortes)</option>
-        <option value="grid">10. CSS Grid Layout</option>
-        <option value="flex">11. Flexbox Alignment</option>
-        <option value="aspect">12. Aspect Ratio</option>
-        <option value="scroll">13. Custom Scrollbar</option>
-        <option value="cursor">14. Custom Cursor</option>
-        <option value="converter">15. Conversor PX / REM</option>
+        <option value="tokens">01. DESIGN TOKENS</option>
+        <option value="shadow">02. BOX SHADOW</option>
+        <option value="glass">03. GLASSMORPHISM</option>
+        <option value="gradient">04. GRADIENT</option>
+        <option value="border">05. BORDER</option>
+        <option value="textShadow">06. TEXT SHADOW</option>
+        <option value="transform">07. TRANSFORM</option>
+        <option value="filter">08. FILTERS</option>
+        <option value="clipPath">09. CLIP PATH</option>
+        <option value="grid">10. GRID LAYOUT</option>
+        <option value="flex">11. FLEXBOX</option>
+        <option value="aspect">12. ASPECT RATIO</option>
+        <option value="scroll">13. SCROLLBAR</option>
+        <option value="cursor">14. CURSOR</option>
+        <option value="converter">15. PX TO REM</option>
       </select>
 
       <div id="controls-tokens" class="module-controls active">
         <div class="control-group">
-          <label for="tokColor">Color Accento</label>
-          <input type="color" id="tokColor" value="#38bdf8">
+          <label for="tokColor">COLOR ACCENTO <span>HEX</span></label>
+          <input type="color" id="tokColor" value="#ffffff">
         </div>
         <div class="control-group">
-          <label for="tokBg">Fondo Superficie</label>
-          <input type="color" id="tokBg" value="#1e293b">
+          <label for="tokBg">FONDO SUPERFICIE <span>HEX</span></label>
+          <input type="color" id="tokBg" value="#000000">
         </div>
         <div class="control-group">
-          <label for="tokRadius">Border Radius: <span id="valTokRadius">8px</span></label>
-          <input type="range" id="tokRadius" min="0" max="30" value="8">
+          <label for="tokRadius">BORDER RADIUS <span id="valTokRadius">0px</span></label>
+          <input type="range" id="tokRadius" min="0" max="30" value="0">
         </div>
       </div>
 
       <div id="controls-shadow" class="module-controls">
         <div class="control-group">
-          <label for="shdX">Offset X: <span id="valShdX">0px</span></label>
+          <label for="shdX">OFFSET X <span id="valShdX">0px</span></label>
           <input type="range" id="shdX" min="-50" max="50" value="0">
         </div>
         <div class="control-group">
-          <label for="shdY">Offset Y: <span id="valShdY">10px</span></label>
+          <label for="shdY">OFFSET Y <span id="valShdY">10px</span></label>
           <input type="range" id="shdY" min="-50" max="50" value="10">
         </div>
         <div class="control-group">
-          <label for="shdBlur">Blur Radius: <span id="valShdBlur">15px</span></label>
+          <label for="shdBlur">BLUR RADIUS <span id="valShdBlur">15px</span></label>
           <input type="range" id="shdBlur" min="0" max="100" value="15">
         </div>
         <div class="control-group">
-          <label for="shdColor">Color Sombra</label>
-          <input type="color" id="shdColor" value="#000000">
+          <label for="shdColor">COLOR SOMBRA</label>
+          <input type="color" id="shdColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-glass" class="module-controls">
         <div class="control-group">
-          <label for="glsBlur">Backdrop Blur: <span id="valGlsBlur">10px</span></label>
+          <label for="glsBlur">BACKDROP BLUR <span id="valGlsBlur">10px</span></label>
           <input type="range" id="glsBlur" min="0" max="30" value="10">
         </div>
         <div class="control-group">
-          <label for="glsOpacity">Opacidad Fondo: <span id="valGlsOp">0.2</span></label>
+          <label for="glsOpacity">OPACIDAD <span id="valGlsOp">0.2</span></label>
           <input type="range" id="glsOpacity" min="0" max="1" step="0.05" value="0.2">
         </div>
       </div>
 
       <div id="controls-gradient" class="module-controls">
         <div class="control-group">
-          <label for="grdColor1">Color 1</label>
-          <input type="color" id="grdColor1" value="#38bdf8">
+          <label for="grdColor1">COLOR 1</label>
+          <input type="color" id="grdColor1" value="#ffffff">
         </div>
         <div class="control-group">
-          <label for="grdColor2">Color 2</label>
-          <input type="color" id="grdColor2" value="#818cf8">
+          <label for="grdColor2">COLOR 2</label>
+          <input type="color" id="grdColor2" value="#333333">
         </div>
         <div class="control-group">
-          <label for="grdAngle">Ángulo: <span id="valGrdAngle">90deg</span></label>
+          <label for="grdAngle">ÁNGULO <span id="valGrdAngle">90deg</span></label>
           <input type="range" id="grdAngle" min="0" max="360" value="90">
         </div>
       </div>
 
       <div id="controls-border" class="module-controls">
         <div class="control-group">
-          <label for="brdWidth">Grosor Borde: <span id="valBrdWidth">2px</span></label>
-          <input type="range" id="brdWidth" min="1" max="10" value="2">
+          <label for="brdWidth">GROSOR BORDE <span id="valBrdWidth">1px</span></label>
+          <input type="range" id="brdWidth" min="1" max="10" value="1">
         </div>
         <div class="control-group">
-          <label for="brdStyle">Estilo</label>
+          <label for="brdStyle">ESTILO</label>
           <select id="brdStyle">
-            <option value="solid">Solid</option>
-            <option value="dashed">Dashed</option>
-            <option value="dotted">Dotted</option>
-            <option value="double">Double</option>
+            <option value="solid">SOLID</option>
+            <option value="dashed">DASHED</option>
+            <option value="dotted">DOTTED</option>
           </select>
         </div>
         <div class="control-group">
-          <label for="brdColor">Color Borde</label>
-          <input type="color" id="brdColor" value="#38bdf8">
+          <label for="brdColor">COLOR BORDE</label>
+          <input type="color" id="brdColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-textShadow" class="module-controls">
         <div class="control-group">
-          <label for="txtShdX">Offset X: <span id="valTxtX">2px</span></label>
+          <label for="txtShdX">OFFSET X <span id="valTxtX">2px</span></label>
           <input type="range" id="txtShdX" min="-20" max="20" value="2">
         </div>
         <div class="control-group">
-          <label for="txtShdY">Offset Y: <span id="valTxtY">2px</span></label>
+          <label for="txtShdY">OFFSET Y <span id="valTxtY">2px</span></label>
           <input type="range" id="txtShdY" min="-20" max="20" value="2">
         </div>
         <div class="control-group">
-          <label for="txtShdBlur">Blur: <span id="valTxtBlur">4px</span></label>
+          <label for="txtShdBlur">BLUR <span id="valTxtBlur">4px</span></label>
           <input type="range" id="txtShdBlur" min="0" max="20" value="4">
         </div>
         <div class="control-group">
-          <label for="txtShdColor">Color Texto</label>
-          <input type="color" id="txtShdColor" value="#38bdf8">
+          <label for="txtShdColor">COLOR TEXTO</label>
+          <input type="color" id="txtShdColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-transform" class="module-controls">
         <div class="control-group">
-          <label for="trfRotate">Rotación: <span id="valTrfRot">5deg</span></label>
-          <input type="range" id="trfRotate" min="-180" max="180" value="5">
+          <label for="trfRotate">ROTACIÓN <span id="valTrfRot">0deg</span></label>
+          <input type="range" id="trfRotate" min="-180" max="180" value="0">
         </div>
         <div class="control-group">
-          <label for="trfScale">Escala: <span id="valTrfScl">1</span></label>
+          <label for="trfScale">ESCALA <span id="valTrfScl">1</span></label>
           <input type="range" id="trfScale" min="0.5" max="1.5" step="0.05" value="1">
         </div>
       </div>
 
       <div id="controls-filter" class="module-controls">
         <div class="control-group">
-          <label for="fltBlur">Blur: <span id="valFltBlur">0px</span></label>
+          <label for="fltBlur">BLUR <span id="valFltBlur">0px</span></label>
           <input type="range" id="fltBlur" min="0" max="10" value="0">
         </div>
         <div class="control-group">
-          <label for="fltBright">Brillo: <span id="valFltBrt">100%</span></label>
+          <label for="fltBright">BRILLO <span id="valFltBrt">100%</span></label>
           <input type="range" id="fltBright" min="0" max="200" value="100">
         </div>
         <div class="control-group">
-          <label for="fltContrast">Contraste: <span id="valFltCnt">100%</span></label>
+          <label for="fltContrast">CONTRASTE <span id="valFltCnt">100%</span></label>
           <input type="range" id="fltContrast" min="0" max="200" value="100">
         </div>
       </div>
 
       <div id="controls-clipPath" class="module-controls">
         <div class="control-group">
-          <label for="clipShape">Forma de Recorte</label>
+          <label for="clipShape">FORMA DE RECORTE</label>
           <select id="clipShape">
-            <option value="none">Ninguno</option>
-            <option value="circle(50% at 50% 50%)">Círculo</option>
-            <option value="polygon(50% 0%, 0% 100%, 100% 100%)">Triángulo</option>
-            <option value="polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)">Pentágono</option>
+            <option value="none">NINGUNO</option>
+            <option value="polygon(50% 0%, 0% 100%, 100% 100%)">TRIÁNGULO</option>
+            <option value="polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)">PENTÁGONO</option>
           </select>
         </div>
       </div>
 
       <div id="controls-grid" class="module-controls">
         <div class="control-group">
-          <label for="grdCols">Columnas: <span id="valGrdCols">2</span></label>
+          <label for="grdCols">COLUMNAS <span id="valGrdCols">2</span></label>
           <input type="range" id="grdCols" min="1" max="4" value="2">
         </div>
         <div class="control-group">
-          <label for="grdGap">Gap: <span id="valGrdGap">10px</span></label>
+          <label for="grdGap">GAP <span id="valGrdGap">10px</span></label>
           <input type="range" id="grdGap" min="0" max="30" value="10">
         </div>
       </div>
 
       <div id="controls-flex" class="module-controls">
         <div class="control-group">
-          <label for="flxJustify">Justify Content</label>
+          <label for="flxJustify">JUSTIFY CONTENT</label>
           <select id="flxJustify">
-            <option value="center">Center</option>
-            <option value="flex-start">Flex Start</option>
-            <option value="flex-end">Flex End</option>
-            <option value="space-between">Space Between</option>
+            <option value="center">CENTER</option>
+            <option value="flex-start">FLEX START</option>
+            <option value="flex-end">FLEX END</option>
+            <option value="space-between">SPACE BETWEEN</option>
           </select>
         </div>
         <div class="control-group">
-          <label for="flxAlign">Align Items</label>
+          <label for="flxAlign">ALIGN ITEMS</label>
           <select id="flxAlign">
-            <option value="center">Center</option>
-            <option value="flex-start">Flex Start</option>
-            <option value="flex-end">Flex End</option>
+            <option value="center">CENTER</option>
+            <option value="flex-start">FLEX START</option>
+            <option value="flex-end">FLEX END</option>
           </select>
         </div>
       </div>
 
       <div id="controls-aspect" class="module-controls">
         <div class="control-group">
-          <label for="aspRatio">Relación de Aspecto</label>
+          <label for="aspRatio">RELACIÓN DE ASPECTO</label>
           <select id="aspRatio">
-            <option value="1 / 1">1 / 1 (Cuadrado)</option>
-            <option value="16 / 9">16 / 9 (Video)</option>
-            <option value="4 / 3">4 / 3 (Estándar)</option>
-            <option value="21 / 9">21 / 9 (Ultrawide)</option>
+            <option value="1 / 1">1 / 1 (CUADRADO)</option>
+            <option value="16 / 9">16 / 9 (CINEMA)</option>
+            <option value="4 / 3">4 / 3 (CLÁSICO)</option>
           </select>
         </div>
       </div>
 
       <div id="controls-scroll" class="module-controls">
         <div class="control-group">
-          <label for="sclWidth">Ancho Scrollbar: <span id="valSclW">8px</span></label>
+          <label for="sclWidth">ANCHO SCROLLBAR <span id="valSclW">8px</span></label>
           <input type="range" id="sclWidth" min="4" max="16" value="8">
         </div>
         <div class="control-group">
-          <label for="sclColor">Color Scrollbar</label>
-          <input type="color" id="sclColor" value="#38bdf8">
+          <label for="sclColor">COLOR SCROLLBAR</label>
+          <input type="color" id="sclColor" value="#ffffff">
         </div>
       </div>
 
       <div id="controls-cursor" class="module-controls">
         <div class="control-group">
-          <label for="curType">Tipo de Cursor</label>
+          <label for="curType">TIPO DE CURSOR</label>
           <select id="curType">
-            <option value="pointer">Pointer</option>
-            <option value="crosshair">Crosshair</option>
-            <option value="grab">Grab</option>
-            <option value="not-allowed">Not Allowed</option>
-            <option value="zoom-in">Zoom In</option>
+            <option value="pointer">POINTER</option>
+            <option value="crosshair">CROSSHAIR</option>
+            <option value="grab">GRAB</option>
+            <option value="not-allowed">NOT ALLOWED</option>
           </select>
         </div>
       </div>
 
       <div id="controls-converter" class="module-controls">
         <div class="control-group">
-          <label for="basePx">Tamaño Base (px)</label>
+          <label for="basePx">TAMAÑO BASE (PX)</label>
           <input type="number" id="basePx" value="16">
         </div>
         <div class="control-group">
-          <label for="inputPx">Valor en Píxeles (px)</label>
+          <label for="inputPx">VALOR EN PÍXELES (PX)</label>
           <input type="number" id="inputPx" value="24">
         </div>
       </div>
@@ -471,30 +520,30 @@
 
     <section class="panel preview-area">
       <div class="demo-element" id="demoCard">
-        <h3 id="demoTitle">Vista Previa</h3>
-        <p id="demoText" style="color: #94a3b8; font-size: 0.85rem;">
-          Elemento de prueba interactivo.
+        <h3 id="demoTitle">PREVIEW_01</h3>
+        <p id="demoText" style="color: #888888; font-size: 0.75rem;">
+          SYSTEM RENDER TEST
         </p>
-        <button class="demo-btn">Acción</button>
+        <button class="demo-btn">ACTION</button>
       </div>
     </section>
 
     <section class="panel">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-        <span class="panel-title" style="margin:0;">Código Generado</span>
-        <select id="exportFormat" style="width: 140px; padding: 0.2rem 0.4rem;">
-          <option value="css">CSS Variables</option>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+        <span class="panel-title" style="margin:0;">[02] EXPORT CODE</span>
+        <select id="exportFormat" style="width: 140px; padding: 0.3rem;" onchange="render()">
+          <option value="css">CSS VARS</option>
           <option value="scss">SCSS</option>
-          <option value="json">DTCG JSON</option>
-          <option value="ts">TypeScript</option>
-          <option value="tailwind">Tailwind v4</option>
+          <option value="json">JSON</option>
+          <option value="ts">TYPESCRIPT</option>
+          <option value="tailwind">TAILWIND</option>
         </select>
       </div>
 
       <div class="code-wrapper">
         <pre><code id="codeBlock" class="language-css"></code></pre>
       </div>
-      <button class="copy-btn" onclick="copyCode()">Copiar Código</button>
+      <button class="copy-btn" onclick="copyCode()">COPY CODE</button>
     </section>
   </div>
 
@@ -676,7 +725,7 @@
         const c = document.getElementById('sclColor').value;
         document.getElementById('valSclW').innerText = `${w}px`;
 
-        generatedCode = `/* Scrollbar CSS */\n::-webkit-scrollbar {\n  width: ${w}px;\n}\n::-webkit-scrollbar-thumb {\n  background: ${c};\n  border-radius: 4px;\n}`;
+        generatedCode = `/* SCROLLBAR */\n::-webkit-scrollbar {\n  width: ${w}px;\n}\n::-webkit-scrollbar-thumb {\n  background: ${c};\n}`;
 
       } else if (currentTool === 'cursor') {
         const type = document.getElementById('curType').value;
@@ -689,7 +738,7 @@
         const inputPx = parseFloat(document.getElementById('inputPx').value) || 0;
         const remVal = (inputPx / basePx).toFixed(4).replace(/\.?0+$/, '');
 
-        generatedCode = `/* Base: ${basePx}px */\n.element {\n  font-size: ${remVal}rem; /* ${inputPx}px */\n}`;
+        generatedCode = `/* BASE: ${basePx}px */\n.element {\n  font-size: ${remVal}rem; /* ${inputPx}px */\n}`;
       }
 
       codeBlock.className = `language-${codeLanguage}`;
@@ -703,8 +752,8 @@
     function copyCode() {
       navigator.clipboard.writeText(codeBlock.textContent).then(() => {
         const btn = document.querySelector('.copy-btn');
-        btn.textContent = '¡Copiado!';
-        setTimeout(() => btn.textContent = 'Copiar Código', 1500);
+        btn.textContent = 'COPIED TO CLIPBOARD';
+        setTimeout(() => btn.textContent = 'COPY CODE', 1500);
       });
     }
 
