@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDG Pro App — Dev Edition</title>
+  <title>CDG Pro App — Dev & JS/TS Edition</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
@@ -341,7 +341,7 @@
       cursor: pointer;
     }
 
-    /* MODAL DE DESARROLLO (12 GUIDES) */
+    /* MODAL DE GUIDES CON PESTAÑAS */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -373,11 +373,35 @@
     }
 
     .modal-header {
-      padding: 1.2rem;
+      padding: 1rem 1.2rem;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .modal-tabs {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.8rem 1.2rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--panel-bg);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--text-main);
+      color: var(--accent-invert);
     }
 
     .modal-close-btn {
@@ -389,12 +413,19 @@
       cursor: pointer;
     }
 
+    .modal-grid-container {
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
     .modal-grid {
-      display: grid;
+      display: none;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1rem;
-      padding: 1.5rem;
-      overflow-y: auto;
+    }
+
+    .modal-grid.active {
+      display: grid;
     }
 
     .guide-card {
@@ -464,7 +495,7 @@
       </button>
 
       <button class="dev-modal-btn" onclick="toggleDevModal(true)">
-        DEVELOPMENT [12 GUIDES]
+        GUIDES HUB [19 MODES]
       </button>
     </div>
   </header>
@@ -474,6 +505,31 @@
       <div class="panel-title">[01] SELECCIÓN DE MÓDULO</div>
       
       <select id="toolSelector" class="tool-select" onchange="switchTool(this.value)">
+        <optgroup label="JAVASCRIPT & TYPESCRIPT (7 GUIDES)">
+          <option value="js_array">JS ARRAY METHODS</option>
+          <option value="js_modules">JS ES MODULES</option>
+          <option value="js_promises">JS PROMISES & ASYNC/AWAIT</option>
+          <option value="ts_basics">TYPESCRIPT BASICS</option>
+          <option value="ts_generics">TYPESCRIPT GENERICS</option>
+          <option value="ts_utilities">TYPESCRIPT UTILITY TYPES</option>
+          <option value="js_console">CONSOLE COMMANDS</option>
+        </optgroup>
+
+        <optgroup label="DEVELOPMENT & AI (12 GUIDES)">
+          <option value="fable">FABLE 5 WEB DESIGN</option>
+          <option value="launch">LAUNCH WEBSITE AI</option>
+          <option value="context">CONTEXT ENGINEERING</option>
+          <option value="openclaw">OPENCLAW SECURITY</option>
+          <option value="shortcuts">VS CODE & CURSOR SHORTCUTS</option>
+          <option value="git">GIT COMMANDS</option>
+          <option value="webperf">WEB PERFORMANCE</option>
+          <option value="claudeskill">CLAUDE SKILLS</option>
+          <option value="cursorrules">CURSOR RULES (.MDC)</option>
+          <option value="copilot">COPILOT INSTRUCTIONS</option>
+          <option value="gemini">GEMINI GEMS & SKILLS</option>
+          <option value="windsurf">WINDSURF RULES</option>
+        </optgroup>
+
         <optgroup label="CSS STYLING & TOKENS">
           <option value="tokens">01. DESIGN TOKENS</option>
           <option value="shadow">02. BOX SHADOW</option>
@@ -490,21 +546,6 @@
           <option value="scroll">13. SCROLLBAR</option>
           <option value="cursor">14. CURSOR</option>
           <option value="converter">15. PX TO REM</option>
-        </optgroup>
-
-        <optgroup label="DEVELOPMENT & AI MODES">
-          <option value="fable">16. FABLE 5 WEB DESIGN</option>
-          <option value="launch">17. LAUNCH WEBSITE AI</option>
-          <option value="context">18. CONTEXT ENGINEERING</option>
-          <option value="openclaw">19. OPENCLAW SECURITY</option>
-          <option value="shortcuts">20. VS CODE & CURSOR SHORTCUTS</option>
-          <option value="git">21. GIT COMMANDS</option>
-          <option value="webperf">22. WEB PERFORMANCE</option>
-          <option value="claudeskill">23. CLAUDE SKILLS</option>
-          <option value="cursorrules">24. CURSOR RULES (.MDC)</option>
-          <option value="copilot">25. COPILOT INSTRUCTIONS</option>
-          <option value="gemini">26. GEMINI GEMS & SKILLS</option>
-          <option value="windsurf">27. WINDSURF RULES</option>
         </optgroup>
       </select>
 
@@ -721,12 +762,12 @@
 
       <div id="controls-dev-generic" class="module-controls">
         <div class="control-group">
-          <label>TARGET FRAMEWORK / AI ENGINE</label>
+          <label>TARGET COMPILER / RUNTIME</label>
           <select id="devTarget" onchange="render()">
-            <option value="cursor">CURSOR IDE</option>
-            <option value="claude">CLAUDE 3.7 / SONNET</option>
-            <option value="gemini">GEMINI 2.0 FLASH</option>
-            <option value="copilot">GITHUB COPILOT</option>
+            <option value="es6">ES6+ / MODERN JS</option>
+            <option value="ts">TYPESCRIPT 5.x</option>
+            <option value="node">NODE.JS RUNTIME</option>
+            <option value="browser">BROWSER CONSOLE</option>
           </select>
         </div>
       </div>
@@ -746,15 +787,15 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <span class="panel-title" style="margin:0;">[02] EXPORT CODE</span>
         <select id="exportFormat" style="width: 130px; padding: 0.3rem;" onchange="render()">
+          <option value="js">JS / TS CODE</option>
           <option value="css">CSS / CONFIG</option>
           <option value="json">JSON</option>
           <option value="md">MARKDOWN</option>
-          <option value="ts">TYPESCRIPT</option>
         </select>
       </div>
 
       <div class="code-wrapper">
-        <pre><code id="codeBlock" class="language-css"></code></pre>
+        <pre><code id="codeBlock" class="language-javascript"></code></pre>
       </div>
       <button class="copy-btn" onclick="copyCode()">COPY CODE</button>
     </section>
@@ -763,80 +804,127 @@
   <div class="modal-overlay" id="devModal">
     <div class="modal-container">
       <div class="modal-header">
-        <span style="font-weight: bold; font-size: 0.9rem;">DEVELOPMENT — 12 GUIDES</span>
+        <span style="font-weight: bold; font-size: 0.9rem;">DESIGN.DEV GUIDES HUB</span>
         <button class="modal-close-btn" onclick="toggleDevModal(false)">[X] CLOSE</button>
       </div>
-      <div class="modal-grid">
-        <div class="guide-card" onclick="selectGuide('fable')">
-          <div class="guide-icon">✨</div>
-          <div class="guide-title">Fable 5 Web Design</div>
-          <div class="guide-desc">One-shot expert-level websites with AI: design-brief framework, technique breakdowns, and art direction.</div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" onclick="switchModalTab('jsts')">JAVASCRIPT & TYPESCRIPT (7)</button>
+        <button class="tab-btn" onclick="switchModalTab('dev')">DEVELOPMENT (12)</button>
+      </div>
+
+      <div class="modal-grid-container">
+        <div class="modal-grid active" id="tab-jsts">
+          <div class="guide-card" onclick="selectGuide('js_array')">
+            <div class="guide-icon">📋</div>
+            <div class="guide-title">JavaScript Array Methods</div>
+            <div class="guide-desc">Complete reference for JavaScript array methods organized by use case.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('js_modules')">
+            <div class="guide-icon">📚</div>
+            <div class="guide-title">JavaScript ES Modules</div>
+            <div class="guide-desc">import, export, dynamic import(), import.meta, and barrel file patterns.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('js_promises')">
+            <div class="guide-icon">🕒</div>
+            <div class="guide-title">JavaScript Promises & Async/Await</div>
+            <div class="guide-desc">Master async JavaScript with Promises, async/await, and error handling patterns.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('ts_basics')">
+            <div class="guide-icon">🏷️</div>
+            <div class="guide-title">TypeScript Basics</div>
+            <div class="guide-desc">Types, inference, unions, narrowing, and type vs interface.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('ts_generics')">
+            <div class="guide-icon">🔁</div>
+            <div class="guide-title">TypeScript Generics</div>
+            <div class="guide-desc">Generic functions, constraints, defaults, and reusable API types.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('ts_utilities')">
+            <div class="guide-icon">🧰</div>
+            <div class="guide-title">TypeScript Utility Types</div>
+            <div class="guide-desc">Partial, Pick, Omit, Record, ReturnType, Parameters, and recipes.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('js_console')">
+            <div class="guide-icon">⌨️</div>
+            <div class="guide-title">Console Commands</div>
+            <div class="guide-desc">Complete browser console reference for debugging and performance monitoring.</div>
+          </div>
         </div>
-        <div class="guide-card" onclick="selectGuide('launch')">
-          <div class="guide-icon">🚀</div>
-          <div class="guide-title">Launch a Website with AI</div>
-          <div class="guide-desc">Beginner walkthrough for building a static site with Claude or Cursor and auto-deploying from GitHub to Netlify.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('context')">
-          <div class="guide-icon">⚙️</div>
-          <div class="guide-title">Context Engineering</div>
-          <div class="guide-desc">Configure AGENTS.md, CLAUDE.md, Cursor rules, Copilot instructions, and more in one unified strategy.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('openclaw')">
-          <div class="guide-icon">🛡️</div>
-          <div class="guide-title">OpenClaw Security Guide</div>
-          <div class="guide-desc">Secure configuration for OpenClaw, Moltbot, and Clawdbot AI agents.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('shortcuts')">
-          <div class="guide-icon">⌨️</div>
-          <div class="guide-title">VS Code & Cursor Shortcuts</div>
-          <div class="guide-desc">Complete keyboard shortcuts for VS Code and Cursor IDE with AI commands.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('git')">
-          <div class="guide-icon">🌿</div>
-          <div class="guide-title">Git Commands</div>
-          <div class="guide-desc">Essential Git commands for branching, committing, merging, and more.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('webperf')">
-          <div class="guide-icon">⚡</div>
-          <div class="guide-title">Web Performance</div>
-          <div class="guide-desc">Master Core Web Vitals, loading strategies, and optimization techniques.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('claudeskill')">
-          <div class="guide-icon">🧩</div>
-          <div class="guide-title">Claude Skills</div>
-          <div class="guide-desc">Create and configure SKILL.md files for AI agents in Cursor IDE.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('cursorrules')">
-          <div class="guide-icon">📄</div>
-          <div class="guide-title">Cursor Rules</div>
-          <div class="guide-desc">Configure AI rules with .mdc files in the modern .cursor/rules/ system.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('copilot')">
-          <div class="guide-icon">💬</div>
-          <div class="guide-title">Copilot Instructions</div>
-          <div class="guide-desc">Repository-wide and path-specific custom instructions for GitHub Copilot.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('gemini')">
-          <div class="guide-icon">💎</div>
-          <div class="guide-title">Gemini Gems & Skills</div>
-          <div class="guide-desc">Create custom AI experts and configure GEMINI.md agent instructions.</div>
-        </div>
-        <div class="guide-card" onclick="selectGuide('windsurf')">
-          <div class="guide-icon">💨</div>
-          <div class="guide-title">Windsurf Rules</div>
-          <div class="guide-desc">Global and workspace rules for Cascade AI in Windsurf IDE.</div>
+
+        <div class="modal-grid" id="tab-dev">
+          <div class="guide-card" onclick="selectGuide('fable')">
+            <div class="guide-icon">✨</div>
+            <div class="guide-title">Fable 5 Web Design</div>
+            <div class="guide-desc">One-shot expert-level websites with AI: design-brief framework and technique breakdowns.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('launch')">
+            <div class="guide-icon">🚀</div>
+            <div class="guide-title">Launch a Website with AI</div>
+            <div class="guide-desc">Building static sites with Claude/Cursor and auto-deploying from GitHub to Netlify.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('context')">
+            <div class="guide-icon">⚙️</div>
+            <div class="guide-title">Context Engineering</div>
+            <div class="guide-desc">Configure AGENTS.md, CLAUDE.md, and Cursor rules in one unified strategy.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('openclaw')">
+            <div class="guide-icon">🛡️</div>
+            <div class="guide-title">OpenClaw Security Guide</div>
+            <div class="guide-desc">Secure configuration for OpenClaw, Moltbot, and Clawdbot AI agents.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('shortcuts')">
+            <div class="guide-icon">⌨️</div>
+            <div class="guide-title">VS Code & Cursor Shortcuts</div>
+            <div class="guide-desc">Complete keyboard shortcuts for VS Code and Cursor IDE with AI commands.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('git')">
+            <div class="guide-icon">🌿</div>
+            <div class="guide-title">Git Commands</div>
+            <div class="guide-desc">Essential Git commands for branching, committing, merging, and more.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('webperf')">
+            <div class="guide-icon">⚡</div>
+            <div class="guide-title">Web Performance</div>
+            <div class="guide-desc">Master Core Web Vitals, loading strategies, and optimization techniques.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('claudeskill')">
+            <div class="guide-icon">🧩</div>
+            <div class="guide-title">Claude Skills</div>
+            <div class="guide-desc">Create and configure SKILL.md files for AI agents in Cursor IDE.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('cursorrules')">
+            <div class="guide-icon">📄</div>
+            <div class="guide-title">Cursor Rules</div>
+            <div class="guide-desc">Configure AI rules with .mdc files in the modern .cursor/rules/ system.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('copilot')">
+            <div class="guide-icon">💬</div>
+            <div class="guide-title">Copilot Instructions</div>
+            <div class="guide-desc">Repository-wide and path-specific custom instructions for GitHub Copilot.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('gemini')">
+            <div class="guide-icon">💎</div>
+            <div class="guide-title">Gemini Gems & Skills</div>
+            <div class="guide-desc">Create custom AI experts and configure GEMINI.md agent instructions.</div>
+          </div>
+          <div class="guide-card" onclick="selectGuide('windsurf')">
+            <div class="guide-icon">💨</div>
+            <div class="guide-title">Windsurf Rules</div>
+            <div class="guide-desc">Global and workspace rules for Cascade AI in Windsurf IDE.</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-scss.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
   <script>
-    let currentTool = 'tokens';
+    let currentTool = 'js_array';
     let isMobileView = false;
 
     const demoCard = document.getElementById('demoCard');
@@ -860,6 +948,14 @@
       document.getElementById('devModal').classList.toggle('active', show);
     }
 
+    function switchModalTab(tabKey) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.modal-grid').forEach(grid => grid.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(`tab-${tabKey}`).classList.add('active');
+    }
+
     function selectGuide(guideKey) {
       toggleDevModal(false);
       toolSelector.value = guideKey;
@@ -870,9 +966,12 @@
       currentTool = toolName;
       document.querySelectorAll('.module-controls').forEach(ctl => ctl.classList.remove('active'));
 
-      const isDevTool = ['fable','launch','context','openclaw','shortcuts','git','webperf','claudeskill','cursorrules','copilot','gemini','windsurf'].includes(toolName);
+      const isDevOrJs = [
+        'js_array','js_modules','js_promises','ts_basics','ts_generics','ts_utilities','js_console',
+        'fable','launch','context','openclaw','shortcuts','git','webperf','claudeskill','cursorrules','copilot','gemini','windsurf'
+      ].includes(toolName);
 
-      if (isDevTool) {
+      if (isDevOrJs) {
         document.getElementById('controls-dev-generic').classList.add('active');
       } else {
         const ctrlEl = document.getElementById(`controls-${toolName}`);
@@ -891,87 +990,77 @@
     function render() {
       resetDemoStyles();
       let generatedCode = '';
-      const format = document.getElementById('exportFormat').value;
+      let codeLang = 'javascript';
 
-      // Renderizadores para Desarrollo (12 Guides)
-      const devGuidesData = {
-        fable: {
-          title: "FABLE 5 DESIGN",
-          desc: "One-shot expert-level website framework",
-          code: `# Fable 5 Web Design Brief\n- Aesthetic: Brutalist Monochrome\n- Typography: Space Mono\n- Framework: HTML + Single File App`
+      // Diccionario de Guías JS/TS y Dev
+      const guidesData = {
+        // --- JAVASCRIPT & TYPESCRIPT (7) ---
+        js_array: {
+          title: "JS ARRAY METHODS",
+          desc: "Reference for array operations and mutations",
+          lang: "javascript",
+          code: `// Array Methods Cheat Sheet\nconst items = [{ id: 1, name: 'Item A' }, { id: 2, name: 'Item B' }];\n\n// Transform & Filter\nconst names = items.map(item => item.name);\nconst filtered = items.filter(item => item.id > 1);\nconst found = items.find(item => item.id === 1);`
         },
-        launch: {
-          title: "LAUNCH AI SITE",
-          desc: "Auto-deploying GitHub to Netlify",
-          code: `# Deploy Pipeline\n1. git init && git add .\n2. gh repo create site --public\n3. netlify deploy --prod`
+        js_modules: {
+          title: "JS ES MODULES",
+          desc: "Import/Export & Barrel File Patterns",
+          lang: "javascript",
+          code: `// Named & Default Exports\nexport const config = { theme: 'dark' };\nexport default class App {}\n\n// Dynamic Import\nconst module = await import('./module.js');`
         },
-        context: {
-          title: "CONTEXT ENG.",
-          desc: "Unified AGENTS.md & CLAUDE.md config",
-          code: `# AGENTS.md System Prompt\nRole: Senior Frontend Engineer\nConstraints: Pure CSS, Zero Dependencies, High Performance.`
+        js_promises: {
+          title: "PROMISES & ASYNC",
+          desc: "Async/Await with Try/Catch Handling",
+          lang: "javascript",
+          code: `async function fetchData(url) {\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error(\`HTTP \${res.status}\`);\n    return await res.json();\n  } catch (err) {\n    console.error('Fetch Error:', err);\n  }\n}`
         },
-        openclaw: {
-          title: "OPENCLAW SEC",
-          desc: "Security rules for Clawdbot AI agents",
-          code: `{\n  "securityLevel": "strict",\n  "allowExecution": false,\n  "sandbox": true\n}`
+        ts_basics: {
+          title: "TYPESCRIPT BASICS",
+          desc: "Inference, Unions & Interfaces",
+          lang: "typescript",
+          code: `type Theme = 'light' | 'dark' | 'matrix';\n\ninterface UserConfig {\n  readonly id: string;\n  theme: Theme;\n  active?: boolean;\n}`
         },
-        shortcuts: {
-          title: "VS / CURSOR KEYS",
-          desc: "Essential AI shortcuts",
-          code: `// Keybindings\nCMD + K: Inline Edit\nCMD + L: Chat Panel\nCMD + I: Composer Agent`
+        ts_generics: {
+          title: "TYPESCRIPT GENERICS",
+          desc: "Reusable Type Constraints & Defaults",
+          lang: "typescript",
+          code: `interface ApiResponse<TData> {\n  data: TData;\n  status: number;\n}\n\nfunction wrapData<T extends object>(data: T): ApiResponse<T> {\n  return { data, status: 200 };\n}`
         },
-        git: {
-          title: "GIT COMMANDS",
-          desc: "Branching & Workflow",
-          code: `git checkout -b feature/new-ui\ngit commit -m "feat: add responsive layout"\ngit push origin feature/new-ui`
+        ts_utilities: {
+          title: "TS UTILITY TYPES",
+          desc: "Partial, Pick, Omit & Record",
+          lang: "typescript",
+          code: `interface User {\n  id: string;\n  name: string;\n  email: string;\n}\n\ntype UserUpdate = Partial<User>;\ntype UserSummary = Pick<User, 'id' | 'name'>;\ntype UserDictionary = Record<string, User>;`
         },
-        webperf: {
-          title: "WEB PERF VITALS",
-          desc: "Core Web Vitals Optimization",
-          code: `/* Optimization Header */\nlink: rel="preload" href="font.woff2" as="font";\nloading: lazy;`
+        js_console: {
+          title: "CONSOLE COMMANDS",
+          desc: "Debugging & Performance Benchmarking",
+          lang: "javascript",
+          code: `// Precision Debugging\nconsole.table([{ name: 'App', status: 'OK' }]);\nconsole.time('renderTime');\n// Code execution...\nconsole.timeEnd('renderTime');`
         },
-        claudeskill: {
-          title: "CLAUDE SKILLS",
-          desc: "SKILL.md definition file",
-          code: `---
-name: CSS Generator
-description: Auto-generates CSS variables
----
-# Skill execution rules`
-        },
-        cursorrules: {
-          title: "CURSOR RULES",
-          desc: ".cursor/rules/.mdc configuration",
-          code: `---
-description: Code Style
-globs: *.css, *.js
----
-Always use Space Mono font and dark themes.`
-        },
-        copilot: {
-          title: "COPILOT RULES",
-          desc: "Custom repository instructions",
-          code: `// .github/copilot-instructions.md\nEnforce semantic HTML5 and vanilla JavaScript.`
-        },
-        gemini: {
-          title: "GEMINI GEMS",
-          desc: "GEMINI.md Agent Blueprint",
-          code: `# GEMINI.MD\nSystem: Assist in Single-File Web App creation with AAA24 aesthetic.`
-        },
-        windsurf: {
-          title: "WINDSURF RULES",
-          desc: "Cascade AI Workspace Rules",
-          code: `# Cascade Rules\nprioritize_speed: true\ncode_formatting: minimal`
-        }
+
+        // --- DEVELOPMENT & AI (12) ---
+        fable: { title: "FABLE 5 DESIGN", desc: "Expert website framework", lang: "markdown", code: `# Fable 5 Framework\n- Architecture: Single-File Component\n- Style: Minimalist Monospaced` },
+        launch: { title: "LAUNCH AI SITE", desc: "GitHub to Netlify Pipeline", lang: "bash", code: `git init && git add .\ngh repo create app --public\nnetlify deploy --prod` },
+        context: { title: "CONTEXT ENG.", desc: "AGENTS.md & CLAUDE.md Rules", lang: "markdown", code: `# System Context\nMaintain clean, zero-dependency Javascript.` },
+        openclaw: { title: "OPENCLAW SEC", desc: "Clawdbot Security Sandbox", lang: "json", code: `{\n  "sandbox": true,\n  "strictExecution": true\n}` },
+        shortcuts: { title: "CURSOR SHORTCUTS", desc: "Keybindings Reference", lang: "javascript", code: `// CMD+K: Inline Edit | CMD+L: Chat | CMD+I: Composer` },
+        git: { title: "GIT COMMANDS", desc: "Branch & Commit Workflow", lang: "bash", code: `git checkout -b feature/ui\ngit commit -m "feat: add modules"\ngit push origin feature/ui` },
+        webperf: { title: "WEB PERF VITALS", desc: "Core Web Vitals Blueprint", lang: "css", code: `/* Preload critical assets */\nlink[rel="preload"] { as: font; }` },
+        claudeskill: { title: "CLAUDE SKILLS", desc: "SKILL.md Template", lang: "markdown", code: `---\nname: JS Utility Generator\n---` },
+        cursorrules: { title: "CURSOR RULES", desc: ".cursor/rules System", lang: "markdown", code: `---\nglobs: *.js, *.ts\n---` },
+        copilot: { title: "COPILOT RULES", desc: "Repo-wide Instructions", lang: "markdown", code: `# Copilot Instructions\nUse modern ES6+ features.` },
+        gemini: { title: "GEMINI GEMS", desc: "GEMINI.md Agent Specification", lang: "markdown", code: `# GEMINI.MD\nRole: Senior JS Architect` },
+        windsurf: { title: "WINDSURF RULES", desc: "Cascade AI Rules", lang: "markdown", code: `# Cascade Config\nspeed_priority: true` }
       };
 
-      if (devGuidesData[currentTool]) {
-        const guide = devGuidesData[currentTool];
-        demoTitle.textContent = guide.title;
-        demoText.textContent = guide.desc;
-        generatedCode = guide.code;
+      if (guidesData[currentTool]) {
+        const g = guidesData[currentTool];
+        demoTitle.textContent = g.title;
+        demoText.textContent = g.desc;
+        generatedCode = g.code;
+        codeLang = g.lang;
       } 
-      // Renderizadores de CSS Tokens y Herramientas
+      // Tokens y Estilos CSS
       else if (currentTool === 'tokens') {
         const color = document.getElementById('tokColor').value;
         const bg = document.getElementById('tokBg').value;
@@ -984,28 +1073,16 @@ Always use Space Mono font and dark themes.`
 
         demoTitle.textContent = "TOKENS PREVIEW";
         demoText.textContent = "DESIGN SYSTEM VARS";
-
+        codeLang = "css";
         generatedCode = `:root {\n  --primary-color: ${color};\n  --bg-surface: ${bg};\n  --border-radius: ${radius}px;\n}`;
-      } else if (currentTool === 'shadow') {
-        const x = document.getElementById('shdX').value;
-        const y = document.getElementById('shdY').value;
-        const blur = document.getElementById('shdBlur').value;
-        const color = document.getElementById('shdColor').value;
-        document.getElementById('valShdX').innerText = `${x}px`;
-        document.getElementById('valShdY').innerText = `${y}px`;
-        document.getElementById('valShdBlur').innerText = `${blur}px`;
-
-        const shadowVal = `${x}px ${y}px ${blur}px ${color}`;
-        demoCard.style.boxShadow = shadowVal;
-        demoTitle.textContent = "BOX SHADOW";
-
-        generatedCode = `.box-shadow {\n  box-shadow: ${shadowVal};\n}`;
       } else {
         demoTitle.textContent = currentTool.toUpperCase();
         demoText.textContent = "CUSTOM RENDER";
-        generatedCode = `/* CSS Configuration for ${currentTool} */\n.element {\n  display: block;\n}`;
+        codeLang = "css";
+        generatedCode = `/* Style Configuration */\n.element {\n  display: block;\n}`;
       }
 
+      codeBlock.className = `language-${codeLang}`;
       codeBlock.textContent = generatedCode;
       if (window.Prism) Prism.highlightElement(codeBlock);
     }
