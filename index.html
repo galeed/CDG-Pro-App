@@ -1,20 +1,59 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="default">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDG Pro App — AAA24 Responsive</title>
+  <title>CDG Pro App — AAA24 Themes</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
-    :root {
+    /* TEMAS DE COLOR (VARIABLES CSS) */
+    :root[data-theme="default"] {
       --bg-main: #000000;
       --panel-bg: #000000;
       --border-color: #ffffff;
       --text-main: #ffffff;
       --text-muted: #888888;
-      --font-mono: 'Space Mono', monospace;
+      --preview-bg: #080808;
+      --dot-grid: #222222;
+      --accent-invert: #000000;
+    }
+
+    /* Skin 1: Matrix Terminal */
+    :root[data-theme="matrix"] {
+      --bg-main: #020d04;
+      --panel-bg: #020d04;
+      --border-color: #00ff41;
+      --text-main: #00ff41;
+      --text-muted: #008f11;
+      --preview-bg: #000501;
+      --dot-grid: #003b00;
+      --accent-invert: #020d04;
+    }
+
+    /* Skin 2: Light Clean */
+    :root[data-theme="light"] {
+      --bg-main: #f4f4f0;
+      --panel-bg: #f4f4f0;
+      --border-color: #111111;
+      --text-main: #111111;
+      --text-muted: #666666;
+      --preview-bg: #e8e8e4;
+      --dot-grid: #cccccc;
+      --accent-invert: #ffffff;
+    }
+
+    /* Skin 3: Cyber Gamer (Neon Dark) */
+    :root[data-theme="gamer"] {
+      --bg-main: #0a0814;
+      --panel-bg: #0a0814;
+      --border-color: #ff0055;
+      --text-main: #00f0ff;
+      --text-muted: #8a00ff;
+      --preview-bg: #05030a;
+      --dot-grid: #2a083b;
+      --accent-invert: #0a0814;
     }
 
     * {
@@ -26,12 +65,13 @@
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
-      font-family: var(--font-mono);
+      font-family: 'Space Mono', monospace;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       text-transform: uppercase;
       letter-spacing: -0.02em;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     /* Header Estilo AAA24 */
@@ -44,7 +84,7 @@
       align-items: center;
       z-index: 10;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.8rem;
     }
 
     header h1 {
@@ -57,15 +97,28 @@
       display: flex;
       align-items: center;
       gap: 0.8rem;
+      flex-wrap: wrap;
     }
 
-    /* Botón con Emoji Intercambiable Modo Móvil/Escritorio */
+    /* Selector de Temas */
+    .theme-select {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.3rem 0.6rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+    }
+
     .view-toggle-btn {
       background: var(--bg-main);
       border: 1px solid var(--border-color);
       color: var(--text-main);
       padding: 0.3rem 0.8rem;
-      font-family: var(--font-mono);
+      font-family: 'Space Mono', monospace;
       font-size: 0.85rem;
       cursor: pointer;
       display: flex;
@@ -76,7 +129,7 @@
 
     .view-toggle-btn:hover {
       background: var(--text-main);
-      color: #000000;
+      color: var(--accent-invert);
     }
 
     .status-badge {
@@ -85,7 +138,6 @@
       border: 1px solid var(--border-color);
     }
 
-    /* Layout Adaptable (Grid Dinámico) */
     .app-container {
       display: grid;
       grid-template-columns: 340px 1fr 400px;
@@ -100,6 +152,7 @@
       display: flex;
       flex-direction: column;
       background-color: var(--bg-main);
+      transition: border-color 0.2s ease;
     }
 
     .panel:last-child {
@@ -119,7 +172,7 @@
       background: var(--bg-main);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      font-family: var(--font-mono);
+      font-family: 'Space Mono', monospace;
       font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -158,7 +211,7 @@
       border: 1px solid var(--border-color);
       color: var(--text-main);
       padding: 0.5rem;
-      font-family: var(--font-mono);
+      font-family: 'Space Mono', monospace;
       font-size: 0.8rem;
       border-radius: 0;
       outline: none;
@@ -199,16 +252,15 @@
       margin-top: -6px;
     }
 
-    /* Vista Previa con Simulación de Pantalla */
     .preview-area {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #080808;
+      background: var(--preview-bg);
       position: relative;
       padding: 1.5rem;
-      background-image: radial-gradient(#222 1px, transparent 0);
+      background-image: radial-gradient(var(--dot-grid) 1px, transparent 0);
       background-size: 16px 16px;
       min-height: 320px;
     }
@@ -218,8 +270,8 @@
       max-width: 100%;
       width: 100%;
       text-align: center;
-      color: #ffffff;
-      background-color: #000000;
+      color: var(--text-main);
+      background-color: var(--bg-main);
       border: 1px solid var(--border-color);
       border-radius: 0px;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -230,12 +282,11 @@
       gap: 1rem;
     }
 
-    /* Estilos del modo MÓVIL simulado dentro de la Vista Previa */
     .demo-element.mobile-viewport {
       max-width: 280px;
       padding: 1.5rem;
       border: 2px solid var(--border-color);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
     .demo-btn {
@@ -243,8 +294,8 @@
       border: 1px solid var(--border-color);
       border-radius: 0;
       background-color: var(--text-main);
-      color: #000000;
-      font-family: var(--font-mono);
+      color: var(--accent-invert);
+      font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
       font-weight: bold;
       text-transform: uppercase;
@@ -253,7 +304,7 @@
     }
 
     .demo-btn:hover {
-      background-color: #000000;
+      background-color: var(--bg-main);
       color: var(--text-main);
     }
 
@@ -263,7 +314,7 @@
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--border-color);
-      background: #000000;
+      background: var(--bg-main);
       min-height: 200px;
     }
 
@@ -273,13 +324,14 @@
       background: transparent !important;
       height: 100%;
       overflow: auto;
-      font-family: var(--font-mono) !important;
+      font-family: 'Space Mono', monospace !important;
       font-size: 0.75rem !important;
       text-transform: none !important;
     }
 
     code[class*="language-"] {
-      font-family: var(--font-mono) !important;
+      font-family: 'Space Mono', monospace !important;
+      color: var(--text-main) !important;
       text-transform: none !important;
     }
 
@@ -287,9 +339,9 @@
       margin-top: 1rem;
       padding: 0.7rem;
       background: var(--text-main);
-      color: #000000;
+      color: var(--accent-invert);
       border: 1px solid var(--border-color);
-      font-family: var(--font-mono);
+      font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
       font-weight: bold;
       text-transform: uppercase;
@@ -299,31 +351,22 @@
     }
 
     .copy-btn:hover {
-      background: #000000;
+      background: var(--bg-main);
       color: var(--text-main);
     }
 
-    /* MEDIA QUERIES PARA ADAPTACIÓN MÓVIL Y TABLET REAL */
     @media (max-width: 1024px) {
-      body {
-        overflow: auto;
-      }
-
+      body { overflow: auto; }
       .app-container {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
         overflow: visible;
       }
-
       .panel {
         border-right: none;
         border-bottom: 1px solid var(--border-color);
-        max-height: none;
       }
-
-      .code-wrapper {
-        height: 250px;
-      }
+      .code-wrapper { height: 250px; }
     }
   </style>
 </head>
@@ -332,11 +375,18 @@
   <header>
     <h1>CDG PRO APP</h1>
     <div class="header-controls">
+      <select id="themeSelector" class="theme-select" onchange="changeTheme(this.value)">
+        <option value="default">SKIN: MONO BLACK (AAA24)</option>
+        <option value="matrix">SKIN: MATRIX TERMINAL 🟢</option>
+        <option value="light">SKIN: LIGHT CLEAN ⚪</option>
+        <option value="gamer">SKIN: CYBER GAMER 🟣</option>
+      </select>
+
       <button id="viewToggle" class="view-toggle-btn" onclick="toggleViewport()">
         <span id="viewEmoji">💻</span>
         <span id="viewText">DESKTOP VIEW</span>
       </button>
-      <span class="status-badge">v2.1 RESPONSIVE</span>
+      <span class="status-badge">v2.2 THEMES</span>
     </div>
   </header>
 
@@ -577,7 +627,7 @@
     <section class="panel preview-area">
       <div class="demo-element" id="demoCard">
         <h3 id="demoTitle">PREVIEW_01</h3>
-        <p id="demoText" style="color: #888888; font-size: 0.75rem;">
+        <p id="demoText" style="color: var(--text-muted); font-size: 0.75rem;">
           SYSTEM RENDER TEST
         </p>
         <button class="demo-btn">ACTION</button>
@@ -617,7 +667,10 @@
     const codeBlock = document.getElementById('codeBlock');
     const exportFormatSelect = document.getElementById('exportFormat');
 
-    // Alternar vista previa Escritorio / Móvil mediante el botón con emoji
+    function changeTheme(themeName) {
+      document.documentElement.setAttribute('data-theme', themeName);
+    }
+
     function toggleViewport() {
       isMobileView = !isMobileView;
       const emojiEl = document.getElementById('viewEmoji');
