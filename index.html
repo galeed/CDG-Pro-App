@@ -55,6 +55,19 @@
       --accent-invert: #0a0814;
       --card-bg: #130f24;
     }
+    
+    :root[data-theme="mixer"] {
+  --bg-main: #ffffff;         /* Fondo blanco puro para paneles */
+  --panel-bg: #ffffff;
+  --border-color: #000000;    /* Bordes negros definidos como en la cuadrícula de la imagen */
+  --text-main: #000000;       /* Texto negro para máxima legibilidad */
+  --text-muted: #666666;      /* Gris oscuro para texto secundario */
+  --preview-bg: #000000;      /* Fondo negro para el área de preview, imitando el banner de AAA24 */
+  --dot-grid: #222222;        /* Puntos sutiles en el fondo negro */
+  --accent-invert: #ffffff;   /* Texto blanco para los botones cuando se invierte el color */
+  --card-bg: #ffffff;         /* Tarjetas blancas en el hub de guías */
+}
+
 
     * {
       box-sizing: border-box;
@@ -494,6 +507,12 @@
         <option value="matrix">SKIN: MATRIX TERMINAL 🟢</option>
         <option value="light">SKIN: LIGHT CLEAN ⚪</option>
         <option value="gamer">SKIN: CYBER GAMER 🟣</option>
+        <select id="themeSelector" class="theme-select" onchange="changeTheme(this.value)">
+  <option value="default">SKIN: MONO BLACK (AAA24)</option>
+  <option value="matrix">SKIN: MATRIX TERMINAL 🟢</option>
+  <option value="light">SKIN: LIGHT CLEAN ⚪</option>
+  <option value="gamer">SKIN: CYBER GAMER 🟣</option>
+  <option value="mixer">SKIN: MIXER B&N 🏁</option>
       </select>
 
       <button class="view-toggle-btn" onclick="toggleViewport()">
