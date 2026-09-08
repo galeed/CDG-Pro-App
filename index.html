@@ -56,6 +56,19 @@
       --card-bg: #130f24;
     }
 
+    /* NUEVO TEMA: MIXER B&N (A24 Style) */
+    :root[data-theme="mixer"] {
+      --bg-main: #ffffff;
+      --panel-bg: #ffffff;
+      --border-color: #000000;
+      --text-main: #000000;
+      --text-muted: #666666;
+      --preview-bg: #000000;
+      --dot-grid: #222222;
+      --accent-invert: #ffffff;
+      --card-bg: #ffffff;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -293,19 +306,6 @@
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
-    .demo-btn {
-      padding: 0.5rem 1.2rem;
-      border: 1px solid var(--border-color);
-      border-radius: 0;
-      background-color: var(--text-main);
-      color: var(--accent-invert);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-
     .code-wrapper {
       flex: 1;
       display: flex;
@@ -336,7 +336,6 @@
     }
 
     .copy-btn {
-      margin-top: 1rem;
       padding: 0.7rem;
       background: var(--text-main);
       color: var(--accent-invert);
@@ -346,6 +345,11 @@
       font-weight: bold;
       text-transform: uppercase;
       cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .copy-btn:hover {
+      opacity: 0.8;
     }
 
     /* MODAL DE GUIDES */
@@ -494,6 +498,7 @@
         <option value="matrix">SKIN: MATRIX TERMINAL 🟢</option>
         <option value="light">SKIN: LIGHT CLEAN ⚪</option>
         <option value="gamer">SKIN: CYBER GAMER 🟣</option>
+        <option value="mixer">SKIN: MIXER B&N 🏁</option>
       </select>
 
       <button class="view-toggle-btn" onclick="toggleViewport()">
@@ -508,10 +513,15 @@
   </header>
 
   <div class="app-container">
+    <!-- Panel 1: Selectores y Herramientas -->
     <section class="panel">
       <div class="panel-title">[01] SELECCIÓN DE MÓDULO</div>
       
       <select id="toolSelector" class="tool-select" onchange="switchTool(this.value)">
+        <optgroup label="CUSTOM DESIGN">
+          <option value="custom_editor">EDITOR PERSONALIZADO ✍️</option>
+        </optgroup>
+
         <optgroup label="HTML (3 GUIDES)">
           <option value="html_entities">HTML ENTITIES (GENERADOR)</option>
           <option value="html_aria">HTML ACCESSIBILITY & ARIA</option>
@@ -544,13 +554,32 @@
         </optgroup>
       </select>
 
-      <div id="controls-html_entities" class="module-controls active">
+      <!-- Panel: Editor Personalizado -->
+      <div id="controls-custom_editor" class="module-controls active">
+        <div class="control-group">
+          <label>TIPO DE CÓDIGO / DISEÑO</label>
+          <select id="customCodeType" onchange="render()">
+            <option value="html">HTML / Estructura</option>
+            <option value="css">CSS / Estilos</option>
+            <option value="js">JavaScript / Lógica</option>
+            <option value="txt">Texto Libre / Notas</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>INGRESA TU CÓDIGO O TEXTO</label>
+          <textarea id="customCodeInput" placeholder="Escribe aquí tu código, variables, o texto libre (¡admite emojis! ✨)..." style="min-height: 180px;"></textarea>
+        </div>
+      </div>
+
+      <!-- Panel: HTML Entities -->
+      <div id="controls-html_entities" class="module-controls">
         <div class="control-group">
           <label>TEXTO CON SÍMBOLOS A CODIFICAR</label>
           <textarea id="entityInput" placeholder="Ej. © 2026, Café, Español, > & < ...">Ej. © 2026, Café, Español, > & <</textarea>
         </div>
       </div>
 
+      <!-- Controles Genéricos para las demás guías -->
       <div id="controls-dev-generic" class="module-controls">
         <div class="control-group">
           <label>TARGET COMPILER / RUNTIME</label>
@@ -564,15 +593,17 @@
       </div>
     </section>
 
+    <!-- Panel 2: Live Preview -->
     <section class="panel preview-area">
       <div class="demo-element" id="demoCard">
-        <h3 id="demoTitle">PREVIEW_01</h3>
+        <h3 id="demoTitle" style="word-break: break-word;">EDITOR PERSONALIZADO</h3>
         <p id="demoText" style="color: var(--text-muted); font-size: 0.75rem; word-wrap: break-word; white-space: pre-wrap; margin-top: 1rem;">
-          SYSTEM RENDER TEST
+          Esperando entrada de datos...
         </p>
       </div>
     </section>
 
+    <!-- Panel 3: Export Code -->
     <section class="panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <span class="panel-title" style="margin:0;">[02] EXPORT CODE</span>
@@ -587,10 +618,16 @@
       <div class="code-wrapper">
         <pre><code id="codeBlock" class="language-html"></code></pre>
       </div>
-      <button class="copy-btn" onclick="copyCode()">COPY CODE</button>
+      
+      <!-- Botones de Acción Agrupados -->
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <button class="copy-btn" style="flex: 1; margin-top: 0;" onclick="copyCode()">COPY CODE</button>
+        <button class="copy-btn" style="flex: 1; margin-top: 0; background: transparent; color: var(--text-main);" onclick="downloadTxt()">DOWNLOAD .TXT</button>
+      </div>
     </section>
   </div>
 
+  <!-- Modal Guides Hub -->
   <div class="modal-overlay" id="devModal">
     <div class="modal-container">
       <div class="modal-header">
@@ -605,6 +642,7 @@
       </div>
 
       <div class="modal-grid-container">
+        <!-- Grid HTML -->
         <div class="modal-grid active" id="tab-html">
           <div class="guide-card" onclick="selectGuide('html_entities')">
             <div class="guide-icon">📖</div>
@@ -623,6 +661,7 @@
           </div>
         </div>
 
+        <!-- Grid JS & TS -->
         <div class="modal-grid" id="tab-jsts">
           <div class="guide-card" onclick="selectGuide('js_array')">
             <div class="guide-icon">📋</div>
@@ -636,6 +675,7 @@
           </div>
         </div>
 
+        <!-- Grid Development -->
         <div class="modal-grid" id="tab-dev">
           <div class="guide-card" onclick="selectGuide('fable')">
             <div class="guide-icon">✨</div>
@@ -649,12 +689,13 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.css"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
   <script>
-    let currentTool = 'html_entities';
+    let currentTool = 'custom_editor';
     let isMobileView = false;
 
     const demoCard = document.getElementById('demoCard');
@@ -697,7 +738,6 @@
       currentTool = toolName;
       document.querySelectorAll('.module-controls').forEach(ctl => ctl.classList.remove('active'));
 
-      // Excluimos html_entities del panel genérico para que muestre su panel custom
       const isDevOrJsOrHtml = [
         'html_aria','html_media',
         'js_array','js_modules','js_promises','ts_basics','ts_generics','ts_utilities','js_console',
@@ -715,7 +755,6 @@
     }
 
     function encodeToHTML(text) {
-      // Reemplaza caracteres especiales, letras acentuadas y símbolos por su código numérico HTML
       return text.replace(/[\u00A0-\u9999<>\&"']/g, function(i) {
           return '&#' + i.charCodeAt(0) + ';';
       });
@@ -724,7 +763,7 @@
     function resetDemoStyles() {
       demoCard.style = '';
       demoCard.className = 'demo-element' + (isMobileView ? ' mobile-viewport' : '');
-      demoTitle.style = '';
+      demoTitle.style = 'word-break: break-word;';
     }
 
     function render() {
@@ -732,21 +771,32 @@
       let generatedCode = '';
       let codeLang = 'html';
 
-      // --- Lógica Específica para la Herramienta HTML ENTITIES ---
+      // 1. Lógica para HTML Entities
       if (currentTool === 'html_entities') {
         const rawText = entityInput.value || '';
         const encodedText = encodeToHTML(rawText);
         
         demoTitle.textContent = "HTML ENTITIES GENERATOR";
         demoText.textContent = "RESULTADO CODIFICADO:\n\n" + encodedText;
-        generatedCode = `\n<p>\n  ${encodedText}\n</p>`;
+        generatedCode = `<!-- Texto con Entidades HTML -->\n<p>\n  ${encodedText}\n</p>`;
         codeLang = "html";
       } 
+      // 2. Lógica para el Editor Personalizado Libre
+      else if (currentTool === 'custom_editor') {
+        const rawCode = document.getElementById('customCodeInput').value || '';
+        const langType = document.getElementById('customCodeType').value;
+        
+        demoTitle.textContent = "EDITOR PERSONALIZADO";
+        demoText.textContent = rawCode ? "Visualizando captura de datos..." : "Esperando entrada de datos...";
+        
+        generatedCode = rawCode;
+        codeLang = langType === 'txt' ? 'none' : langType;
+      }
+      // 3. Lógica para las guías estáticas
       else {
-        // Datos de otras guías (Ejemplo parcial para mantener funcionalidad del resto del código)
         const guidesData = {
-          html_aria: { title: "HTML ACCESSIBILITY & ARIA", desc: "Roles, States & Accessibility Patterns", lang: "html", code: `\n<div role="dialog" aria-labelledby="dialogTitle" aria-modal="true">\n  <h2 id="dialogTitle">System Notification</h2>\n  <button aria-label="Close dialog" onclick="close()">x</button>\n</div>` },
-          html_media: { title: "HTML MEDIA ELEMENTS", desc: "Responsive Video, Audio & Lazy Loading", lang: "html", code: `\n<picture>\n  <source srcset="hero-large.webp" media="(min-width: 800px)" type="image/webp">\n  <img src="hero-small.jpg" alt="Hero banner" loading="lazy" width="800" height="450">\n</picture>` }
+          html_aria: { title: "HTML ACCESSIBILITY & ARIA", desc: "Roles, States & Accessibility Patterns", lang: "html", code: `<!-- Accessible Modal Dialog -->\n<div role="dialog" aria-labelledby="dialogTitle" aria-modal="true">\n  <h2 id="dialogTitle">System Notification</h2>\n  <button aria-label="Close dialog" onclick="close()">x</button>\n</div>` },
+          html_media: { title: "HTML MEDIA ELEMENTS", desc: "Responsive Video, Audio & Lazy Loading", lang: "html", code: `<!-- Responsive Picture Element -->\n<picture>\n  <source srcset="hero-large.webp" media="(min-width: 800px)" type="image/webp">\n  <img src="hero-small.jpg" alt="Hero banner" loading="lazy" width="800" height="450">\n</picture>` }
         };
 
         if (guidesData[currentTool]) {
@@ -755,6 +805,11 @@
           demoText.textContent = g.desc;
           generatedCode = g.code;
           codeLang = g.lang;
+        } else {
+          demoTitle.textContent = "MÓDULO EN DESARROLLO";
+          demoText.textContent = "La información para esta guía se está actualizando.";
+          generatedCode = `// Selecciona otra guía disponible.`;
+          codeLang = "javascript";
         }
       }
 
@@ -766,9 +821,28 @@
     function copyCode() {
       navigator.clipboard.writeText(codeBlock.textContent).then(() => {
         const btn = document.querySelector('.copy-btn');
-        btn.textContent = 'COPIED TO CLIPBOARD';
-        setTimeout(() => btn.textContent = 'COPY CODE', 1500);
+        const originalText = btn.textContent;
+        btn.textContent = 'COPIED!';
+        setTimeout(() => btn.textContent = originalText, 1500);
       });
+    }
+
+    function downloadTxt() {
+      const codeContent = codeBlock.textContent;
+      const blob = new Blob([codeContent], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      
+      link.href = URL.createObjectURL(blob);
+      link.download = 'codigo_exportado.txt';
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      const btn = document.querySelectorAll('.copy-btn')[1]; // Seleccionamos el segundo botón
+      const originalText = btn.textContent;
+      btn.textContent = 'DOWNLOADED!';
+      setTimeout(() => btn.textContent = originalText, 1500);
     }
 
     document.querySelectorAll('input, select, textarea').forEach(input => {
@@ -776,6 +850,7 @@
       input.addEventListener('change', render);
     });
 
+    // Iniciar renderizado
     render();
   </script>
 </body>
