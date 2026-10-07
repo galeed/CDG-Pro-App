@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light" data-style-theme="none">
+<html lang="es" data-theme="default" data-style-theme="none">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meow CDG App</title>
+  <title>CDG Pro App — Dev, JS/TS & HTML Edition</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400;600;700&display=swap');
@@ -18,7 +18,7 @@
       --tui-glow: rgba(0, 255, 65, 0.15);
       --tui-font: 'Fira Code', 'Space Mono', monospace;
     }
-    
+
     :root[data-theme="default"] {
       --bg-main: #000000;
       --panel-bg: #000000;
@@ -78,7 +78,7 @@
       --accent-invert: #ffffff;
       --card-bg: #ffffff;
     }
-    
+
     /* ESTILOS INSPIRADOS EN ASTRO TUI PORTFOLIO */
     :root[data-style-theme="phosphor-green"] {
       --tui-bg: #020c04;
@@ -88,7 +88,7 @@
       --tui-accent: #008f11;
       --tui-glow: rgba(0, 255, 65, 0.2);
     }
-    
+
     :root[data-style-theme="amber-crt"] {
       --tui-bg: #0f0a00;
       --tui-panel-bg: #1a1200;
@@ -97,7 +97,7 @@
       --tui-accent: #cc8800;
       --tui-glow: rgba(255, 176, 0, 0.2);
     }
-    
+
     :root[data-style-theme="cyber-cyan"] {
       --tui-bg: #000d1a;
       --tui-panel-bg: #00162b;
@@ -106,7 +106,7 @@
       --tui-accent: #0088cc;
       --tui-glow: rgba(0, 223, 255, 0.2);
     }
-    
+
     :root[data-style-theme="dracula-synth"] {
       --tui-bg: #18002e;
       --tui-panel-bg: #27004a;
@@ -115,7 +115,7 @@
       --tui-accent: #8be9fd;
       --tui-glow: rgba(255, 121, 198, 0.2);
     }
-    
+
     :root[data-style-theme="monochrome"] {
       --tui-bg: #121212;
       --tui-panel-bg: #1e1e1e;
@@ -124,7 +124,7 @@
       --tui-accent: #888888;
       --tui-glow: rgba(255, 255, 255, 0.15);
     }
-    
+
     :root[data-style-theme="cappuccino"] {
       --tui-bg: #1b1715;
       --tui-panel-bg: #28221f;
@@ -133,7 +133,7 @@
       --tui-accent: #8c6d58;
       --tui-glow: rgba(215, 186, 157, 0.2);
     }
-    
+
     /* APLICACIÓN GLOBAL DE ESTILOS TUI SI HAY TEMA DE ESTILO ACTIVO */
     :root:not([data-style-theme="none"]) {
       --bg-main: var(--tui-bg);
@@ -146,12 +146,12 @@
       --accent-invert: var(--tui-bg);
       --card-bg: var(--tui-panel-bg);
     }
-    
+
     :root:not([data-style-theme="none"]) body {
       font-family: var(--tui-font);
       box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
     }
-    
+
     :root:not([data-style-theme="none"]) .panel,
     :root:not([data-style-theme="none"]) header,
     :root:not([data-style-theme="none"]) .demo-element,
@@ -159,11 +159,17 @@
       border-color: var(--tui-border);
       box-shadow: 0 0 10px var(--tui-glow);
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden; /* Fija la pantalla principal */
     }
     
     body {
@@ -172,22 +178,21 @@
       font-family: 'Space Mono', monospace;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
       text-transform: uppercase;
       letter-spacing: -0.02em;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
     
     header {
-      padding: 1rem 1.2rem;
+      padding: 0.8rem 1.2rem;
       border-bottom: 1px solid var(--border-color);
       background: var(--bg-main);
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
-      flex-wrap: wrap;
       gap: 0.8rem;
+      flex-shrink: 0;
     }
     
     header h1 {
@@ -200,7 +205,6 @@
       display: flex;
       align-items: center;
       gap: 0.8rem;
-      flex-wrap: wrap;
     }
     
     .theme-select, .dev-modal-btn, .tui-theme-select {
@@ -215,7 +219,7 @@
       outline: none;
       transition: all 0.15s ease;
     }
-    
+
     .tui-theme-select {
       border-color: var(--border-color);
     }
@@ -250,8 +254,9 @@
     
     .app-container {
       display: grid;
-      grid-template-columns: 340px 1fr 400px;
+      grid-template-columns: 340px 1fr 400px; /* Se mantiene tu distribución exacta */
       flex: 1;
+      height: calc(100vh - 53px); /* Alto exacto libre */
       overflow: hidden;
     }
     
@@ -262,6 +267,7 @@
       display: flex;
       flex-direction: column;
       background-color: var(--bg-main);
+      height: 100%;
     }
     
     .panel:last-child {
@@ -327,8 +333,8 @@
     }
     
     textarea {
-      resize: vertical;
-      min-height: 80px;
+      resize: none; /* Desactiva el cambio manual de tamaño que empuja elementos */
+      height: 200px;
     }
     
     input[type="color"] {
@@ -374,7 +380,7 @@
       padding: 1.5rem;
       background-image: radial-gradient(var(--dot-grid) 1px, transparent 0);
       background-size: 16px 16px;
-      min-height: 320px;
+      overflow: hidden;
     }
     
     .demo-element {
@@ -386,16 +392,18 @@
       background-color: var(--bg-main);
       border: 1px solid var(--border-color);
       border-radius: 0px;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1rem;
+      max-height: 100%;
+      overflow-y: auto;
     }
     
     .demo-element.mobile-viewport {
       max-width: 280px;
+      height: 520px;
       padding: 1.5rem;
       border: 2px solid var(--border-color);
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -408,7 +416,6 @@
       overflow: hidden;
       border: 1px solid var(--border-color);
       background: var(--bg-main);
-      min-height: 200px;
     }
     
     pre[class*="language-"] {
@@ -542,11 +549,10 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      transition: transform 0.15s ease, background 0.15s ease;
+      transition: background 0.15s ease;
     }
     
     .guide-card:hover {
-      transform: translateY(-2px);
       background: var(--text-main);
       color: var(--accent-invert);
     }
@@ -571,16 +577,6 @@
       text-transform: none;
       line-height: 1.3;
     }
-    
-    @media (max-width: 1024px) {
-      body { overflow: auto; }
-      .app-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-      }
-      .panel { border-right: none; border-bottom: 1px solid var(--border-color); }
-      .code-wrapper { height: 250px; }
-    }
   </style>
 </head>
 
@@ -595,7 +591,7 @@
         <option value="matrix">SKIN: MATRIX TERMINAL 🟢</option>
         <option value="light">SKIN: LIGHT CLEAN ⚪</option>
         <option value="gamer">SKIN: CYBER GAMER 🟣</option>
-        <option value="mixer">SKIN: MIXER B&amp;N 🏁</option>
+        <option value="mixer">SKIN: MIXER B&N 🏁</option>
       </select>
 
       <!-- BOTÓN 2 (NUEVO): ASTRO TUI STYLES -->
@@ -632,32 +628,32 @@
 
         <optgroup label="HTML (3 GUIDES)">
           <option value="html_entities">HTML ENTITIES (GENERADOR)</option>
-          <option value="html_aria">HTML ACCESSIBILITY &amp; ARIA</option>
+          <option value="html_aria">HTML ACCESSIBILITY & ARIA</option>
           <option value="html_media">HTML MEDIA ELEMENTS</option>
         </optgroup>
 
-        <optgroup label="JAVASCRIPT &amp; TYPESCRIPT (7 GUIDES)">
+        <optgroup label="JAVASCRIPT & TYPESCRIPT (7 GUIDES)">
           <option value="js_array">JS ARRAY METHODS</option>
           <option value="js_modules">JS ES MODULES</option>
-          <option value="js_promises">JS PROMISES &amp; ASYNC/AWAIT</option>
+          <option value="js_promises">JS PROMISES & ASYNC/AWAIT</option>
           <option value="ts_basics">TYPESCRIPT BASICS</option>
           <option value="ts_generics">TYPESCRIPT GENERICS</option>
           <option value="ts_utilities">TYPESCRIPT UTILITY TYPES</option>
           <option value="js_console">CONSOLE COMMANDS</option>
         </optgroup>
 
-        <optgroup label="DEVELOPMENT &amp; AI (12 GUIDES)">
+        <optgroup label="DEVELOPMENT & AI (12 GUIDES)">
           <option value="fable">FABLE 5 WEB DESIGN</option>
           <option value="launch">LAUNCH WEBSITE AI</option>
           <option value="context">CONTEXT ENGINEERING</option>
           <option value="openclaw">OPENCLAW SECURITY</option>
-          <option value="shortcuts">VS CODE &amp; CURSOR SHORTCUTS</option>
+          <option value="shortcuts">VS CODE & CURSOR SHORTCUTS</option>
           <option value="git">GIT COMMANDS</option>
           <option value="webperf">WEB PERFORMANCE</option>
           <option value="claudeskill">CLAUDE SKILLS</option>
           <option value="cursorrules">CURSOR RULES (.MDC)</option>
           <option value="copilot">COPILOT INSTRUCTIONS</option>
-          <option value="gemini">GEMINI GEMS &amp; SKILLS</option>
+          <option value="gemini">GEMINI GEMS & SKILLS</option>
           <option value="windsurf">WINDSURF RULES</option>
         </optgroup>
       </select>
@@ -675,7 +671,7 @@
         </div>
         <div class="control-group">
           <label>INGRESA TU CÓDIGO O TEXTO</label>
-          <textarea id="customCodeInput" placeholder="Escribe aquí tu código, variables, o texto libre (¡admite emojis! ✨)..." style="min-height: 180px;"></textarea>
+          <textarea id="customCodeInput" placeholder="Escribe aquí tu código, variables, o texto libre (¡admite emojis! ✨)..."></textarea>
         </div>
       </div>
 
@@ -683,7 +679,7 @@
       <div id="controls-html_entities" class="module-controls">
         <div class="control-group">
           <label>TEXTO CON SÍMBOLOS A CODIFICAR</label>
-          <textarea id="entityInput" placeholder="Ej. © 2026, Café, Español, &gt; &amp; &lt; ...">Ej. © 2026, Café, Español, &gt; &amp; &lt;</textarea>
+          <textarea id="entityInput" placeholder="Ej. © 2026, Café, Español, > & < ...">Ej. © 2026, Café, Español, > & <</textarea>
         </div>
       </div>
 
@@ -724,7 +720,7 @@
       </div>
 
       <div class="code-wrapper">
-        <pre class="language-html" tabindex="0"><code id="codeBlock" class="language-html"></code></pre>
+        <pre><code id="codeBlock" class="language-html"></code></pre>
       </div>
 
       <!-- Botones de Acción Agrupados -->
@@ -744,14 +740,14 @@
       </div>
 
       <div class="modal-tabs">
-        <button class="tab-btn" onclick="switchModalTab('html')">HTML (3)</button>
-        <button class="tab-btn active" onclick="switchModalTab('jsts')">JS &amp; TS (7)</button>
+        <button class="tab-btn active" onclick="switchModalTab('html')">HTML (3)</button>
+        <button class="tab-btn" onclick="switchModalTab('jsts')">JS & TS (7)</button>
         <button class="tab-btn" onclick="switchModalTab('dev')">DEVELOPMENT (12)</button>
       </div>
 
       <div class="modal-grid-container">
         <!-- Grid HTML -->
-        <div class="modal-grid" id="tab-html">
+        <div class="modal-grid active" id="tab-html">
           <div class="guide-card" onclick="selectGuide('html_entities')">
             <div class="guide-icon">📖</div>
             <div class="guide-title">HTML Entities Generator</div>
@@ -759,7 +755,7 @@
           </div>
           <div class="guide-card" onclick="selectGuide('html_aria')">
             <div class="guide-icon">🕒</div>
-            <div class="guide-title">HTML Accessibility &amp; ARIA</div>
+            <div class="guide-title">HTML Accessibility & ARIA</div>
             <div class="guide-desc">Complete ARIA reference with roles, states, properties, and accessibility.</div>
           </div>
           <div class="guide-card" onclick="selectGuide('html_media')">
@@ -770,7 +766,7 @@
         </div>
 
         <!-- Grid JS & TS -->
-        <div class="modal-grid active" id="tab-jsts">
+        <div class="modal-grid" id="tab-jsts">
           <div class="guide-card" onclick="selectGuide('js_array')">
             <div class="guide-icon">📋</div>
             <div class="guide-title">JavaScript Array Methods</div>
@@ -976,9 +972,6 @@
 
     render();
   </script>
-
-
-
 </body>
 
 </html>
