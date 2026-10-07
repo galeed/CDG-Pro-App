@@ -165,12 +165,6 @@
       margin: 0;
       padding: 0;
     }
-
-    html, body {
-      width: 100%;
-      height: 100vh;
-      overflow: hidden; /* Fija la pantalla principal */
-    }
     
     body {
       background-color: var(--bg-main);
@@ -178,21 +172,22 @@
       font-family: 'Space Mono', monospace;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
       text-transform: uppercase;
       letter-spacing: -0.02em;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
     
     header {
-      padding: 0.8rem 1.2rem;
+      padding: 1rem 1.2rem;
       border-bottom: 1px solid var(--border-color);
       background: var(--bg-main);
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
+      flex-wrap: wrap;
       gap: 0.8rem;
-      flex-shrink: 0;
     }
     
     header h1 {
@@ -205,6 +200,7 @@
       display: flex;
       align-items: center;
       gap: 0.8rem;
+      flex-wrap: wrap;
     }
     
     .theme-select, .dev-modal-btn, .tui-theme-select {
@@ -254,9 +250,8 @@
     
     .app-container {
       display: grid;
-      grid-template-columns: 340px 1fr 400px; /* Se mantiene tu distribución exacta */
+      grid-template-columns: 340px 1fr 400px;
       flex: 1;
-      height: calc(100vh - 53px); /* Alto exacto libre */
       overflow: hidden;
     }
     
@@ -267,7 +262,6 @@
       display: flex;
       flex-direction: column;
       background-color: var(--bg-main);
-      height: 100%;
     }
     
     .panel:last-child {
@@ -333,8 +327,8 @@
     }
     
     textarea {
-      resize: none; /* Desactiva el cambio manual de tamaño que empuja elementos */
-      height: 200px;
+      resize: vertical;
+      min-height: 80px;
     }
     
     input[type="color"] {
@@ -380,7 +374,7 @@
       padding: 1.5rem;
       background-image: radial-gradient(var(--dot-grid) 1px, transparent 0);
       background-size: 16px 16px;
-      overflow: hidden;
+      min-height: 320px;
     }
     
     .demo-element {
@@ -392,18 +386,16 @@
       background-color: var(--bg-main);
       border: 1px solid var(--border-color);
       border-radius: 0px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      max-height: 100%;
-      overflow-y: auto;
     }
     
     .demo-element.mobile-viewport {
       max-width: 280px;
-      height: 520px;
       padding: 1.5rem;
       border: 2px solid var(--border-color);
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -416,6 +408,7 @@
       overflow: hidden;
       border: 1px solid var(--border-color);
       background: var(--bg-main);
+      min-height: 200px;
     }
     
     pre[class*="language-"] {
@@ -549,10 +542,11 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      transition: background 0.15s ease;
+      transition: transform 0.15s ease, background 0.15s ease;
     }
     
     .guide-card:hover {
+      transform: translateY(-2px);
       background: var(--text-main);
       color: var(--accent-invert);
     }
@@ -576,6 +570,16 @@
       color: var(--text-muted);
       text-transform: none;
       line-height: 1.3;
+    }
+    
+    @media (max-width: 1024px) {
+      body { overflow: auto; }
+      .app-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .panel { border-right: none; border-bottom: 1px solid var(--border-color); }
+      .code-wrapper { height: 250px; }
     }
   </style>
 </head>
@@ -671,7 +675,7 @@
         </div>
         <div class="control-group">
           <label>INGRESA TU CÓDIGO O TEXTO</label>
-          <textarea id="customCodeInput" placeholder="Escribe aquí tu código, variables, o texto libre (¡admite emojis! ✨)..."></textarea>
+          <textarea id="customCodeInput" placeholder="Escribe aquí tu código, variables, o texto libre (¡admite emojis! ✨)..." style="min-height: 180px;"></textarea>
         </div>
       </div>
 
