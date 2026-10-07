@@ -47,7 +47,7 @@ jobs:
         run: |
           mkdir -p www
           cp -r index.html manifest.json sw.js *.png www/ 3>/dev/null || true
-          npx cap init "Meow CDG App" "com.meowaudio.app" --web-dir www
+          npx cap init "Meow CDG App" "com.meowcdg.app" --web-dir www
           npx cap add android
           npx cap copy android
           npx cap sync android
@@ -84,4 +84,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: meow-app-debug.apk
-          path: android/app/build/outputs/apk/debug/appm-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
