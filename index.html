@@ -166,6 +166,15 @@
       padding: 0;
     }
     
+    html, body {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden; /* Fija la pantalla principal */
+  overscroll-behavior: none; /* Evita el efecto liga/rebote en toda la página */
+}
+
+    
+    
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
@@ -256,13 +265,15 @@
     }
     
     .panel {
-      padding: 1.2rem;
-      border-right: 1px solid var(--border-color);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      background-color: var(--bg-main);
-    }
+  padding: 1.2rem;
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-main);
+  height: 100%;
+  overscroll-behavior: contain; /* Aísla el scroll al panel sin rebotar fuera */
+}
     
     .panel:last-child {
       border-right: none;
@@ -412,17 +423,18 @@
     }
     
     pre[class*="language-"] {
-      margin: 0 !important;
-      padding: 1rem !important;
-      background: transparent !important;
-      height: 100%;
-      overflow: auto;
-      font-family: inherit !important;
-      font-size: 0.75rem !important;
-      text-transform: none !important;
-      word-wrap: break-word;
-      white-space: pre-wrap;
-    }
+  margin: 0 !important;
+  padding: 1rem !important;
+  background: transparent !important;
+  height: 100%;
+  overflow: auto;
+  font-family: inherit !important;
+  font-size: 0.75rem !important;
+  text-transform: none !important;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overscroll-behavior: contain; /* Controla el scroll dentro del bloque de código */
+}
     
     code[class*="language-"] {
       font-family: inherit !important;
@@ -520,9 +532,10 @@
     }
     
     .modal-grid-container {
-      overflow-y: auto;
-      padding: 1.5rem;
-    }
+  overflow-y: auto;
+  padding: 1.5rem;
+  overscroll-behavior: contain; /* Controla el scroll interno del modal */
+}
     
     .modal-grid {
       display: none;
@@ -573,7 +586,7 @@
     }
     
     @media (max-width: 1024px) {
-      body { overflow: auto; }
+      body { overflow: hiden; }
       .app-container {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
