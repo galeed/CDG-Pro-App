@@ -842,13 +842,46 @@
     const toolSelector = document.getElementById('toolSelector');
     const entityInput = document.getElementById('entityInput');
 
-    function changeTheme(themeName) {
+        function changeTheme(themeName) {
+      // 1. Aplica el tema seleccionado
       document.documentElement.setAttribute('data-theme', themeName);
+      
+      // 2. Localiza el otro selector (el de Astro TUI)
+      const tuiSelector = document.getElementById('tuiStyleSelector');
+      
+      // 3. Evalúa: si elegiste un skin distinto al default, apaga el otro botón
+      if (themeName !== 'default') {
+        tuiSelector.disabled = true;
+        tuiSelector.style.opacity = '0.3';
+        tuiSelector.style.cursor = 'not-allowed';
+      } else {
+        // Si regresaste al default, vuelve a encender el otro botón
+        tuiSelector.disabled = false;
+        tuiSelector.style.opacity = '1';
+        tuiSelector.style.cursor = 'pointer';
+      }
     }
 
     function changeStyleTheme(styleName) {
+      // 1. Aplica el estilo seleccionado
       document.documentElement.setAttribute('data-style-theme', styleName);
+      
+      // 2. Localiza el otro selector (el de Skins)
+      const themeSelector = document.getElementById('themeSelector');
+      
+      // 3. Evalúa: si elegiste un estilo distinto a "none", apaga el otro botón
+      if (styleName !== 'none') {
+        themeSelector.disabled = true;
+        themeSelector.style.opacity = '0.3';
+        themeSelector.style.cursor = 'not-allowed';
+      } else {
+        // Si lo desactivaste, vuelve a encender el otro botón
+        themeSelector.disabled = false;
+        themeSelector.style.opacity = '1';
+        themeSelector.style.cursor = 'pointer';
+      }
     }
+
 
     function toggleViewport() {
       isMobileView = !isMobileView;
