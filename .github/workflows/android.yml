@@ -83,5 +83,5 @@ jobs:
       - name: Subir APK como Artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: meow-appCDG-debug.apk
-          path: android/app/build/outputs/apk/debug/appmCDG-debug.apk
+          name: meow-app-debug.apk
+          path: android/app/build/outputs/apk/debug/appm-debug.apk
